@@ -63,6 +63,7 @@ Lets start making the graph! So, just to basically setup the graph, we need data
 So here, we specify how many 'lines' we want to create. We then specify the amount of data points for each 'line' as well as supply the data point. 
 
 Heres the result...
+
 ![Alt text](Example0.png "Optional Title")
 
 Eww... Not the best layout. Maybe I should change the default theme :P. But first, the graph seems to not show the min/max x points as well as min/max y points, or at least there cut off. So lets fix that. Here we set the padding of the graph view.
@@ -71,6 +72,7 @@ Eww... Not the best layout. Maybe I should change the default theme :P. But firs
     [self.scatterPlot setOverallPadding:40.0f];
 ```
 Simple huh? Now lets see what we got.
+
 ![Alt text](Example1.png "Optional Title")
 
 Nice! Now we can actually see all the data.
@@ -96,6 +98,7 @@ Oh nice! Im likin it so far. But theres still some stuff missing :/. Lets add so
 ```
 
 Lets see what this does...
+
 ![Alt text](Example3.png "Optional Title")
 Nice! We have lines! The Vertical Axis is in development now. You can use them but I advise you to wait or contribute!
 
