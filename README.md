@@ -133,3 +133,16 @@ Heres the result...
 Cool, we can distinguish between the data now!
 
 ![Alt text](Showcase.png "Optional Title")
+
+<br><br>
+<h2>Requirements</h2>
+- iOS 7 or higher
+- Automatic Reference Counting (ARC)
+<br><br>
+
+<h2>Author</h2>
+- [John Setting](http://github.com/jsetting32) ([Facebook](https://www.facebook.com/jsetting23))
+<br><br>
+
+<h2>License</h2>
+JSGraphKit is released under the MIT license. See the LICENSE file for more info.
