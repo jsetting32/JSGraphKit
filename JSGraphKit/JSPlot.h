@@ -171,10 +171,16 @@ typedef enum {
  */
 @property (nonatomic, assign) CGFloat graphCornerRadius;
 
-+ (void)drawWithBasePoint:(CGPoint)basePoint andAngle:(CGFloat)angle andFont:(UIFont *)font andColor:(UIColor *)color theText:(NSString *)theText;
+/*!
+ @abstract Gets the max value from all data passed
+ */
+- (CGFloat)getMaxValueFromDataPoints;
+
+
 - (void)iteratorForDataPointsWithRect:(CGRect)rect
                                 block:(void (^)(int maxGraphHeight, CGFloat maxPoint, float divider, CGFloat dataPoint, int i))completionBlock;
-- (CGFloat)getMaxValueFromDataPoints;
+
++ (void)drawWithBasePoint:(CGPoint)basePoint andAngle:(CGFloat)angle andFont:(UIFont *)font andColor:(UIColor *)color theText:(NSString *)theText;
 @end
 
 @protocol JSPlotDelegate <NSObject>
@@ -214,17 +220,36 @@ typedef enum {
  */
 - (NSArray *)graphViewWithVerticalAxisPoints:(JSPlot *)graphView;
 
+/*!
+ * @abstract Creates the gradient within the bar views or line graphs for the specified set number
+ */
 - (NSArray *)gradientColorsForPlotSet:(NSInteger)setNumber;
+
+/*!
+ * @abstract Creates the gradient within the bar views or line graphs for the specified set number
+ */
 - (UIColor *)colorForPlotSet:(NSInteger)setNumber;
 
+/*!
+ * @abstract Creates the legend of the graph
+ */
 - (NSArray *)graphViewWithLegendDataTypes;
 
+/*!
+ * @abstract Creates the animation timer of the data points
+ */
 - (CFTimeInterval)animateDurationForDataPoints;
 
 @required
 
+/*!
+ * @abstract The number of data sets
+ */
 - (NSInteger)numberOfDataSets;
 
+/*!
+ * @abstract The number of data points for a specified data set
+ */
 - (NSInteger)numberOfDataPointsForSet:(NSInteger)setNumber;
 /*!
  * @abstract The data points of the graph

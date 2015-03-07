@@ -19,7 +19,6 @@
 		1EA533DB1AAAB37E003C3541 /* JSLegend.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EA533D11AAAB37E003C3541 /* JSLegend.m */; };
 		1EA533DC1AAAB37E003C3541 /* JSScatterPlot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EA533D31AAAB37E003C3541 /* JSScatterPlot.m */; };
 		1EA533DD1AAAB37E003C3541 /* JSBarPlot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EA533D51AAAB37E003C3541 /* JSBarPlot.m */; };
-		1EA533DE1AAAB37E003C3541 /* UIColor+JSGraphKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EA533D71AAAB37E003C3541 /* UIColor+JSGraphKit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,8 +55,6 @@
 		1EA533D31AAAB37E003C3541 /* JSScatterPlot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSScatterPlot.m; sourceTree = "<group>"; };
 		1EA533D41AAAB37E003C3541 /* JSBarPlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSBarPlot.h; sourceTree = "<group>"; };
 		1EA533D51AAAB37E003C3541 /* JSBarPlot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSBarPlot.m; sourceTree = "<group>"; };
-		1EA533D61AAAB37E003C3541 /* UIColor+JSGraphKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+JSGraphKit.h"; sourceTree = "<group>"; };
-		1EA533D71AAAB37E003C3541 /* UIColor+JSGraphKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+JSGraphKit.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,8 +141,6 @@
 				1EA533CC1AAAB37E003C3541 /* JSGraphView.h */,
 				1EA533CD1AAAB37E003C3541 /* JSGraphView.m */,
 				1EA533E01AAAB38A003C3541 /* JSPlot */,
-				1EA533D61AAAB37E003C3541 /* UIColor+JSGraphKit.h */,
-				1EA533D71AAAB37E003C3541 /* UIColor+JSGraphKit.m */,
 			);
 			name = JSGraphKit;
 			sourceTree = "<group>";
@@ -278,7 +273,6 @@
 				1EA533D81AAAB37E003C3541 /* ViewController.m in Sources */,
 				1EA533AA1AAAB34F003C3541 /* AppDelegate.m in Sources */,
 				1EA533DB1AAAB37E003C3541 /* JSLegend.m in Sources */,
-				1EA533DE1AAAB37E003C3541 /* UIColor+JSGraphKit.m in Sources */,
 				1EA533D91AAAB37E003C3541 /* JSGraphView.m in Sources */,
 				1EA533A71AAAB34F003C3541 /* main.m in Sources */,
 				1EA533DD1AAAB37E003C3541 /* JSBarPlot.m in Sources */,
@@ -472,6 +466,7 @@
 				1EA533C61AAAB34F003C3541 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1EA533C71AAAB34F003C3541 /* Build configuration list for PBXNativeTarget "JSGraphKitTests" */ = {
 			isa = XCConfigurationList;
@@ -480,6 +475,7 @@
 				1EA533C91AAAB34F003C3541 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
