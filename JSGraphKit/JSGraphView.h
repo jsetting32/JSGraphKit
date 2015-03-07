@@ -27,13 +27,6 @@ typedef enum {
  * Makes it easy to access the objects passed in case the data points were parsed from some object
  */
 - (void)JSGraphView:(JSGraphView *)graphView didTapDataPointAtIndex:(NSInteger)index inSet:(NSInteger)setNumber;
-
-/*!
- * @abstract Informs the delegate that the current bar plot was tapped.
- * It then returns the index of the passed in datasource array to the delegate.
- * Makes it easy to access the objects passed in case the data points were parsed from some object
- */
-- (void)JSGraphView:(JSGraphView *)graphView didTapBarPlotAtIndex:(NSInteger)index inSet:(NSInteger)setNumber;
 @end
 
 @protocol JSGraphViewDataSource <NSObject>

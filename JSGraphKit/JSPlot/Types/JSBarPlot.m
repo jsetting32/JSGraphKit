@@ -76,7 +76,6 @@
     [super drawRect:rect];
     
     CGContextRef ctx = UIGraphicsGetCurrentContext();
-    
     [self generateInnerGraphBoundingRect];
     [self drawBarPlotWithRect:self.innerGraphBoundingRect context:ctx];
 }
@@ -194,8 +193,8 @@
     NSInteger intTag2 = (NSInteger)((button.tag-30000)%10000)/10;
     NSInteger intTag1 = (NSInteger)((button.tag-(intTag2*10))-30000)/10000;
 
-    if (self.delegate && [self.delegate respondsToSelector:@selector(JSGraphView:didTapBarPlotAtIndex:inSet:)]) {
-        [self.delegate JSGraphView:self didTapBarPlotAtIndex:intTag1 inSet:intTag2];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(JSGraphView:didTapDataPointAtIndex:inSet:)]) {
+        [self.delegate JSGraphView:self didTapDataPointAtIndex:intTag1 inSet:intTag2];
     }
 }
 

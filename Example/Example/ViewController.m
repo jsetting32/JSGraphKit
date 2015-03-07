@@ -245,38 +245,24 @@
     return 1.0f;
 }
 
-- (void)JSGraphView:(JSGraphView *)graphView didTapBarPlotAtIndex:(NSInteger)index inSet:(NSInteger)setNumber
-{
-    switch (setNumber) {
-        case 0:
-            NSLog(@"Did tap data point: '%@'", [self.dataset1 objectAtIndex:index]);
-            break;
-        case 1:
-            NSLog(@"Did tap data point: '%@'", [self.dataset2 objectAtIndex:index]);
-            break;
-        case 2:
-            NSLog(@"Did tap data point: '%@'", [self.dataset3 objectAtIndex:index]);
-            break;
-        default:
-            break;
-    }
-}
-
 - (void)JSGraphView:(JSGraphView *)graphView didTapDataPointAtIndex:(NSInteger)index inSet:(NSInteger)setNumber
 {
+    NSString *message;
     switch (setNumber) {
         case 0:
-            NSLog(@"Did tap data point: '%@'", [self.dataset1 objectAtIndex:index]);
+            message = [NSString stringWithFormat:@"Did tap data point: '%@' in dataset '0'", [self.dataset1 objectAtIndex:index]];
             break;
         case 1:
-            NSLog(@"Did tap data point: '%@'", [self.dataset2 objectAtIndex:index]);
+            message = [NSString stringWithFormat:@"Did tap data point: '%@' in dataset '1'", [self.dataset2 objectAtIndex:index]];
             break;
         case 2:
-            NSLog(@"Did tap data point: '%@'", [self.dataset3 objectAtIndex:index]);
+            message = [NSString stringWithFormat:@"Did tap data point: '%@' in dataset '2'", [self.dataset3 objectAtIndex:index]];
             break;
         default:
             break;
     }
+    
+    [[[UIAlertView alloc] initWithTitle:message message:nil delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil] show];
 }
 
 - (JSBarPlot *)barPlot
@@ -288,9 +274,7 @@
         [_barPlot setOverallPadding:40.0f];
         [_barPlot setLeftGraphPadding:10.0f];
         [_barPlot setRightGraphPadding:10.0f];
-
         [_barPlot setShowHorizontalAxis:YES];
-
     }
     return _barPlot;
 }
@@ -301,30 +285,20 @@
         _scatterPlot = [[JSScatterPlot alloc] initWithFrame:CGRectMake(10, 400, self.view.frame.size.width - 20, 250)];
         [_scatterPlot setDataSource:self];
         [_scatterPlot setDelegate:self];
-        
         [_scatterPlot setOverallPadding:40.0f];
         [_scatterPlot setLeftGraphPadding:10.0f];
         [_scatterPlot setRightGraphPadding:10.0f];
-        
         [_scatterPlot setPointRadius:5.0f];
         [_scatterPlot setLineWidth:2.0f];
-        
         [_scatterPlot setShowHorizontalAxis:YES];
-        
         [_scatterPlot setBoxLineWidth:1.0f];
-        
         [_scatterPlot setShowPointLabels:YES];
         [_scatterPlot setPointLabelAngle:0.0f];
         [_scatterPlot setPointLabelOffset:CGPointMake(10, -10)];
-        
         [_scatterPlot setShowLineCurvature:NO];
-        
         [_scatterPlot setLineAnimationDuration:5.0f];
-        
         [_scatterPlot setGraphCornerRadius:5.0f];
-        
-        //[_scatterPlot setShowGradientUnderLinePlot:YES];
-
+        [_scatterPlot setShowGradientUnderLinePlot:NO];
     }
     return _scatterPlot;
 }
