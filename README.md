@@ -139,6 +139,27 @@ Cool, we can distinguish between the data now!
 
 ![Alt text](Showcase.png "Optional Title")
 
+You can also 'do stuff' when a point is tapped. Just set your controller as the delegate and respond to the callbacks. Here is the example:
+
+```Objective-C
+- (void)JSPlot:(JSPlot *)graphView didTapDataPointAtIndex:(NSInteger)index inSet:(NSInteger)setNumber
+{
+    switch (setNumber) {
+        case 0:
+            NSLog(@"Did tap data point: '%@'", [self.dataset1 objectAtIndex:index]);
+            break;
+        case 1:
+            NSLog(@"Did tap data point: '%@'", [self.dataset2 objectAtIndex:index]);
+            break;
+        case 2:
+            NSLog(@"Did tap data point: '%@'", [self.dataset3 objectAtIndex:index]);
+            break;
+        default:
+            break;
+    }
+}
+```
+
 <br><br>
 <h2>Requirements</h2>
 - iOS 7 or higher
