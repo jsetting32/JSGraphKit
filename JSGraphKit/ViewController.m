@@ -143,6 +143,24 @@
     return nil;
 }
 
+- (UIColor *)colorForPlotSet:(NSInteger)setNumber
+{
+    switch (setNumber) {
+        case 0:
+            return [UIColor redColor];
+            break;
+        case 1:
+            return [UIColor blueColor];
+            break;
+        case 2:
+            return [UIColor greenColor];
+            break;
+        default:
+            break;
+    }
+    return nil;
+}
+
 - (NSInteger)numberOfDataPointsForSet:(NSInteger)setNumber
 {
     switch (setNumber) {
