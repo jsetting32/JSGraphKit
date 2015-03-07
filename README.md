@@ -83,6 +83,7 @@ Okay now lets set some themes, lets go with the Sky theme (my favorite)
     [self.scatterPlot setTheme:JSGraphThemeSky];
 ```
 Heres what we get...
+
 ![Alt text](Example2.png "Optional Title")
 
 Oh nice! Im likin it so far. But theres still some stuff missing :/. Lets add some horizontal lines! There is a datasource protocol you can implement to do this. Just set the number of lines you want and the library does the rest. By default, the horizontal and vertical axis aren't drawn. To show them, set the properties to yes. But when you set these to show, you need to implement the data source! Otherwise you will crash and receive an Assert message I implemented.
@@ -100,6 +101,7 @@ Oh nice! Im likin it so far. But theres still some stuff missing :/. Lets add so
 Lets see what this does...
 
 ![Alt text](Example3.png "Optional Title")
+
 Nice! We have lines! The Vertical Axis is in development now. You can use them but I advise you to wait or contribute!
 
 
