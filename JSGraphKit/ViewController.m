@@ -33,18 +33,39 @@
     [self.barPlotSegment setFrame:CGRectMake(10, 30, self.view.frame.size.width - 20, 20)];
     [self.barPlotSegment setSelectedSegmentIndex:0];
     [self.barPlotSegment addTarget:self action:@selector(didSelectSegment:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:self.barPlotSegment];
-    
-    [self.view addSubview:self.barPlot];
-
+    //[self.view addSubview:self.barPlotSegment];
 
     self.scatterPlotSegment = [[UISegmentedControl alloc] initWithItems:@[@"Default", @"Forest", @"Dark", @"Light", @"Sky"]];
     [self.scatterPlotSegment setFrame:CGRectMake(10, 350, self.view.frame.size.width - 20, 20)];
     [self.scatterPlotSegment setSelectedSegmentIndex:0];
     [self.scatterPlotSegment addTarget:self action:@selector(didSelectSegment:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:self.scatterPlotSegment];
+    //[self.view addSubview:self.scatterPlotSegment];
 
+    self.scatterPlot = [[JSScatterPlot alloc] initWithFrame:self.view.frame];
+    [self.scatterPlot setDataSource:self];
+    [self.scatterPlot setDelegate:self];
+    
+    [self.scatterPlot setOverallPadding:40.0f];
+    [self.scatterPlot setTheme:JSGraphThemeSky];
+    
+    [self.scatterPlot setShowHorizontalAxis:YES];
+    
     [self.view addSubview:self.scatterPlot];
+
+    /*
+    [self.scatterPlot setOverallPadding:40.0f];
+    [self.scatterPlot setLeftGraphPadding:10.0f];
+    [self.scatterPlot setRightGraphPadding:10.0f];
+    [self.scatterPlot setPointRadius:5.0f];
+    [self.scatterPlot setLineWidth:2.0f];
+    [self.scatterPlot setBoxLineWidth:1.0f];
+    [self.scatterPlot setShowPointLabels:YES];
+    [self.scatterPlot setPointLabelAngle:0.0f];
+    [self.scatterPlot setPointLabelOffset:CGPointMake(10, -10)];
+    [self.scatterPlot setLineCurveMagnitude:0.0f];
+    [self.scatterPlot setGraphCornerRadius:5.0f];
+    [self.scatterPlot setShowGradientUnderLinePlot:YES];
+    */
 }
 
 - (void)didSelectSegment:(UISegmentedControl *)control
@@ -158,6 +179,7 @@
     return nil;
 }
 
+
 - (NSArray *)graphViewWithLegendDataTypes
 {
     return @[@"AAPL", @"GOOG", @"YHOO"];
@@ -168,10 +190,12 @@
     return 3;
 }
 
+/*
 - (NSArray *)graphViewWithVerticalAxisPoints:(JSPlot *)graphView
 {
     return @[@"Mon", @"Tue", @"Wed"];
 }
+*/
 
 - (NSInteger)numberOfHorizontalAxes
 {
@@ -199,15 +223,12 @@
         [_barPlot setBackgroundColor:[UIColor lightGrayColor]];
         [_barPlot setDataSource:self];
         [_barPlot setDelegate:self];
-        
         [_barPlot setOverallPadding:40.0f];
-        [_barPlot setTopPadding:10.0f];
-        [_barPlot setLeftPadding:10.0f];
-        [_barPlot setRightPadding:10.0f];
     }
     return _barPlot;
 }
 
+/*
 - (JSScatterPlot *)scatterPlot
 {
     if (!_scatterPlot) {
@@ -238,5 +259,6 @@
     }
     return _scatterPlot;
 }
+ */
 
 @end

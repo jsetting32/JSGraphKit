@@ -36,20 +36,21 @@
 
 - (void)commonInit
 {
-    [self setTheme:self.graphTheme];
+    self.showPointLabels = YES;
+    self.pointLabelFont = [UIFont fontWithName:@"AppleSDGothicNeo-Light" size:12.0f];
+    self.pointLabelTextColor = [UIColor blackColor];
+    self.pointLabelAngle = 0.0f;
+    self.pointLabelOffset = CGPointMake(10, -10);
+    self.pointRadius = 5.0f;
+    self.outerPointColor = [UIColor blackColor];
+    self.innerPointColor = [UIColor whiteColor];
+    self.showGradientUnderLinePlot = NO;
     
     self.lineColor = [UIColor blackColor];
     self.lineWidth = 1.0f;
-
-    self.pointLabelFont = [UIFont fontWithName:@"AppleSDGothicNeo-Light" size:12.0f];
-    self.pointLabelOffset = CGPointMake(0, 0);
-    self.pointLabelAngle = 0.0f;
-    self.pointLabelTextColor = [UIColor blackColor];
-    self.showPointLabels = YES;
-
-    self.showGradientUnderLinePlot = NO;
-    
     self.lineCurveMagnitude = 0.0f;
+
+    [self setTheme:self.graphTheme];
 }
 
 - (void)setTheme:(JSGraphTheme)theme
@@ -57,13 +58,6 @@
     [super setTheme:theme];
     
     switch (theme) {
-        case JSGraphThemeDefault:
-            self.outerPointColor = [UIColor blackColor];
-            self.innerPointColor = self.outerPointColor;
-            self.gradientColors = @[[UIColor lightGrayColor], [UIColor darkGrayColor]];
-            self.pointLabelTextColor = [UIColor blackColor];
-            self.lineColor = [UIColor blackColor];
-            break;
         case JSGraphThemeForest:
             self.outerPointColor = [UIColor blackColor];
             self.innerPointColor = [UIColor colorWithRed:30.0f/255.0f green:200.0f/255.0f blue:30.0f/255.0f alpha:1.0f];
@@ -123,6 +117,7 @@
 #pragma mark - Draw points
 - (void)drawDataPointsWithRect:(CGRect)rect context:(CGContextRef)ctx
 {
+    if (self.pointRadius <= 0.0f) return;
     CGContextSetFillColorWithColor(ctx, [self.outerPointColor CGColor]);
     CGContextSaveGState(ctx);
 
@@ -189,6 +184,8 @@
 #pragma mark - Draw line plot
 - (void)drawConnectingLinesWithRect:(CGRect)rect context:(CGContextRef)ctx
 {
+    if (self.lineWidth <= 0.0f) return;
+    
     CGFloat maxPoint = [self getMaxValueFromDataPoints];
     int maxGraphHeight = rect.size.height;
 

@@ -82,12 +82,12 @@ typedef enum {
 @property (nonatomic, assign) CGPoint axisVerticalLabelOffset;
 
 /*!
- @abstract Shows the horizontal axes within the inner view (defaults to YES)
+ @abstract Shows the horizontal axes within the inner view (defaults to NO)
  */
 @property (nonatomic, assign) BOOL showHorizontalAxis;
 
 /*!
- @abstract Shows the vertical axes within the inner view (defaults to YES)
+ @abstract Shows the vertical axes within the inner view (defaults to NO)
  */
 @property (nonatomic, assign) BOOL showVerticalAxis;
 

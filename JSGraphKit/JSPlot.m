@@ -16,6 +16,9 @@
 - (instancetype)initWithFrame:(CGRect)frame withTheme:(JSGraphTheme)theme
 {
     if (!(self = [super initWithFrame:frame])) return nil;
+    
+    [self setBackgroundColor:[UIColor colorWithWhite:0.8 alpha:1.0f]];
+    
     self.showHorizontalAxisLabels = NO;
     self.showVerticalAxisLabels = NO;
     self.axisLabelFont = [UIFont fontWithName:@"AppleSDGothicNeo-Light" size:8.0f];
@@ -24,8 +27,8 @@
     self.axisVerticalLabelOffset = CGPointMake(0, 10);
     self.axisHorizontalLabelAngle = 0.0f;
     self.axisHorizontalLabelOffset = CGPointMake(10, 0);
-    self.showHorizontalAxis = YES;
-    self.showVerticalAxis = YES;
+    self.showHorizontalAxis = NO;
+    self.showVerticalAxis = NO;
     self.axisLineColor = [UIColor blackColor];
     self.axisLineWidth = 0.25;
     self.boxLineWidth = 1.0f;

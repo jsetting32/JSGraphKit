@@ -11,11 +11,6 @@
 
 @interface JSScatterPlot : JSPlot
 
-/*!
- @abstract Set the theme
- */
-- (void)setTheme:(JSGraphTheme)theme;
-
 ///--------------------------------------
 /// @name Data Point Attributes
 ///--------------------------------------
@@ -41,12 +36,12 @@
 @property (nonatomic, assign) CGFloat pointLabelAngle;
 
 /*!
- @abstract Sets the line graph's data point label offset from the data point (defaults to (10,0) )
+ @abstract Sets the line graph's data point label offset from the data point (defaults to (10,-10) )
  */
 @property (nonatomic, assign) CGPoint pointLabelOffset;
 
 /*!
- @abstract Sets the line graph's data point circle radius (defaults to 0.0f - no data point)
+ @abstract Sets the line graph's data point circle radius (defaults to 1.0f)
  */
 @property (nonatomic, assign) CGFloat pointRadius;
 
@@ -56,7 +51,7 @@
 @property (nonatomic, retain) UIColor * outerPointColor;
 
 /*!
- @abstract Sets the line graph's data point inner circle color (defaults to black)
+ @abstract Sets the line graph's data point inner circle color (defaults to white)
  */
 @property (nonatomic, retain) UIColor * innerPointColor;
 

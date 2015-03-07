@@ -37,13 +37,13 @@
 
 - (void)commonInit
 {
-    [self setTheme:self.graphTheme];
+    self.barWidth = 20.0f;
     self.barColor = [UIColor whiteColor];
     self.barOutlineColor = [UIColor blackColor];
-    self.barWidth = 20.0f;
     self.automaticallyAdjustBars = YES;
     self.showBarGradientColors = YES;
     self.barGradientColors = @[[UIColor lightGrayColor], [UIColor darkGrayColor]];
+    [self setTheme:self.graphTheme];
 }
 
 
@@ -52,9 +52,6 @@
     [super setTheme:theme];
     
     switch (theme) {
-        case JSGraphThemeDefault:
-            self.barGradientColors = @[[UIColor lightGrayColor], [UIColor darkGrayColor]];
-            break;
         case JSGraphThemeForest:
             self.barGradientColors = @[[UIColor colorWithRed:30.0f/255.0f green:200.0f/255.0f blue:30.0f/255.0f alpha:0.2f],
                                        [UIColor colorWithRed:30.0f/255.0f green:200.0f/255.0f blue:30.0f/255.0f alpha:1.0f]];
