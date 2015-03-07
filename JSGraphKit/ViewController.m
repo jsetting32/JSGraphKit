@@ -10,7 +10,7 @@
 #import "JSScatterPlot.h"
 #import "JSBarPlot.h"
 
-@interface ViewController () <JSPlotDelegate, JSPlotDataSource>
+@interface ViewController () <JSGraphViewDataSource, JSGraphViewDelegate>
 @property (nonatomic, strong) JSScatterPlot *scatterPlot;
 @property (nonatomic, strong) JSBarPlot *barPlot;
 @property (nonatomic, strong) UISegmentedControl *barPlotSegment;
@@ -33,14 +33,15 @@
     [self.barPlotSegment setFrame:CGRectMake(10, 30, self.view.frame.size.width - 20, 20)];
     [self.barPlotSegment setSelectedSegmentIndex:0];
     [self.barPlotSegment addTarget:self action:@selector(didSelectSegment:) forControlEvents:UIControlEventValueChanged];
-    //[self.view addSubview:self.barPlotSegment];
+    [self.view addSubview:self.barPlotSegment];
 
     self.scatterPlotSegment = [[UISegmentedControl alloc] initWithItems:@[@"Default", @"Forest", @"Dark", @"Light", @"Sky"]];
     [self.scatterPlotSegment setFrame:CGRectMake(10, 350, self.view.frame.size.width - 20, 20)];
     [self.scatterPlotSegment setSelectedSegmentIndex:0];
     [self.scatterPlotSegment addTarget:self action:@selector(didSelectSegment:) forControlEvents:UIControlEventValueChanged];
-    //[self.view addSubview:self.scatterPlotSegment];
+    [self.view addSubview:self.scatterPlotSegment];
 
+    /*
     self.scatterPlot = [[JSScatterPlot alloc] initWithFrame:self.view.frame];
     [self.scatterPlot setDataSource:self];
     [self.scatterPlot setDelegate:self];
@@ -49,7 +50,8 @@
     [self.scatterPlot setTheme:JSGraphThemeSky];
     
     [self.scatterPlot setShowHorizontalAxis:YES];
-    
+    */
+    [self.view addSubview:self.barPlot];
     [self.view addSubview:self.scatterPlot];
 
     /*
@@ -198,6 +200,24 @@
 }
 
 
+- (NSArray *)colorForLineGraphDataPointSet:(NSInteger)setNumber
+{
+    switch (setNumber) {
+        case 0:
+            return @[[UIColor redColor], [UIColor blackColor]];
+            break;
+        case 1:
+            return @[[UIColor blueColor], [UIColor brownColor]];
+            break;
+        case 2:
+            return @[[UIColor greenColor], [UIColor yellowColor]];
+            break;
+        default:
+            break;
+    }
+    return nil;
+}
+
 - (NSArray *)graphViewWithLegendDataTypes
 {
     return @[@"AAPL", @"GOOG", @"YHOO"];
@@ -225,33 +245,60 @@
     return 1.0f;
 }
 
-- (void)JSPlot:(JSPlot *)graphView didTapDataPointAtIndex:(NSInteger)index {
-    NSLog(@"Did tap data point: '%@'", [self.dataset1 objectAtIndex:index]);
+- (void)JSGraphView:(JSGraphView *)graphView didTapBarPlotAtIndex:(NSInteger)index inSet:(NSInteger)setNumber
+{
+    switch (setNumber) {
+        case 0:
+            NSLog(@"Did tap data point: '%@'", [self.dataset1 objectAtIndex:index]);
+            break;
+        case 1:
+            NSLog(@"Did tap data point: '%@'", [self.dataset2 objectAtIndex:index]);
+            break;
+        case 2:
+            NSLog(@"Did tap data point: '%@'", [self.dataset3 objectAtIndex:index]);
+            break;
+        default:
+            break;
+    }
 }
 
-- (void)JSPlot:(JSPlot *)graphView didTapBarPlotAtIndex:(NSInteger)index
+- (void)JSGraphView:(JSGraphView *)graphView didTapDataPointAtIndex:(NSInteger)index inSet:(NSInteger)setNumber
 {
-    NSLog(@"Did tap data point: '%@'", [self.dataset1 objectAtIndex:index]);
+    switch (setNumber) {
+        case 0:
+            NSLog(@"Did tap data point: '%@'", [self.dataset1 objectAtIndex:index]);
+            break;
+        case 1:
+            NSLog(@"Did tap data point: '%@'", [self.dataset2 objectAtIndex:index]);
+            break;
+        case 2:
+            NSLog(@"Did tap data point: '%@'", [self.dataset3 objectAtIndex:index]);
+            break;
+        default:
+            break;
+    }
 }
 
 - (JSBarPlot *)barPlot
 {
     if (!_barPlot) {
         _barPlot = [[JSBarPlot alloc] initWithFrame:CGRectMake(10, 70, self.view.frame.size.width - 20, 250)];
-        [_barPlot setBackgroundColor:[UIColor lightGrayColor]];
         [_barPlot setDataSource:self];
         [_barPlot setDelegate:self];
         [_barPlot setOverallPadding:40.0f];
+        [_barPlot setLeftGraphPadding:10.0f];
+        [_barPlot setRightGraphPadding:10.0f];
+
+        [_barPlot setShowHorizontalAxis:YES];
+
     }
     return _barPlot;
 }
 
-/*
 - (JSScatterPlot *)scatterPlot
 {
     if (!_scatterPlot) {
         _scatterPlot = [[JSScatterPlot alloc] initWithFrame:CGRectMake(10, 400, self.view.frame.size.width - 20, 250)];
-        [_scatterPlot setBackgroundColor:[UIColor lightGrayColor]];
         [_scatterPlot setDataSource:self];
         [_scatterPlot setDelegate:self];
         
@@ -262,21 +309,25 @@
         [_scatterPlot setPointRadius:5.0f];
         [_scatterPlot setLineWidth:2.0f];
         
+        [_scatterPlot setShowHorizontalAxis:YES];
+        
         [_scatterPlot setBoxLineWidth:1.0f];
         
         [_scatterPlot setShowPointLabels:YES];
         [_scatterPlot setPointLabelAngle:0.0f];
         [_scatterPlot setPointLabelOffset:CGPointMake(10, -10)];
         
-        [_scatterPlot setLineCurveMagnitude:0.0f];
+        [_scatterPlot setShowLineCurvature:NO];
+        
+        [_scatterPlot setLineAnimationDuration:5.0f];
         
         [_scatterPlot setGraphCornerRadius:5.0f];
         
-        [_scatterPlot setShowGradientUnderLinePlot:YES];
+        //[_scatterPlot setShowGradientUnderLinePlot:YES];
 
     }
     return _scatterPlot;
 }
- */
+
 
 @end

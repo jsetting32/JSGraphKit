@@ -71,11 +71,16 @@
 @property (nonatomic, retain) UIColor * lineColor;
 
 /*!
- @abstract Sets the line graph's line curvature (defaults to 5.0f)
- NOTE: Need to implement
+ @abstract Sets the line graph to show curves rather than straight lines (defaults to NO)
+ NOTE: Not ready yet... Some bugs
  */
-@property (nonatomic, assign) CGFloat lineCurveMagnitude;
+@property (nonatomic, assign) BOOL showLineCurvature;
 
+/*!
+ @abstract Sets the line graph animation duration (defaults to 0.0f - no animation)
+ This will animate all graphs from the first point (far left) to the last point (far right)
+ */
+@property (nonatomic, assign) CGFloat lineAnimationDuration;
 
 
 ///--------------------------------------
@@ -85,9 +90,4 @@
  @abstract Sets the graph view to show a gradient under the line plot (defaults to NO)
  */
 @property (nonatomic, assign) BOOL showGradientUnderLinePlot;
-
-/*!
- @abstract Sets the gradient's layer color under the graph (defaults to blue then red)
- */
-@property (nonatomic, strong) NSArray * gradientColors;
 @end

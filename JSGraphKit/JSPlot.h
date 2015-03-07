@@ -7,35 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JSGraphView.h"
 
-@protocol JSPlotDataSource;
-@protocol JSPlotDelegate;
-
-typedef enum {
-    JSGraphThemeDefault = 0,
-    JSGraphThemeForest = 1,
-    JSGraphThemeDark,
-    JSGraphThemeLight,
-    JSGraphThemeSky
-} JSGraphTheme;
-
-@interface JSPlot : UIView
-
-@property (nonatomic, assign) CGRect boundingRect;
-
-/*!
- * @abstract Initializes the graph view with the passed frame.
- * @params theme: The theme the graph will draw (defaults to JSGraphThemeDefault)
- */
-- (instancetype)initWithFrame:(CGRect)frame withTheme:(JSGraphTheme)theme;
-
-/*!
- @abstract Set the theme
- */
-- (void)setTheme:(JSGraphTheme)theme;
-
-@property (nonatomic, weak)   id <JSPlotDelegate>   delegate;
-@property (nonatomic, assign) id <JSPlotDataSource> dataSource;
+@interface JSPlot : JSGraphView
 
 ///--------------------------------------
 /// @name View Methods
@@ -117,11 +91,6 @@ typedef enum {
 @property (nonatomic, retain) UIColor * boxFillColor;
 
 /*!
- @abstract Sets the overall (top, left, right, bottom) paddings of the inner graph view (defaults to 0.0f)
- */
-@property (nonatomic, assign) CGFloat overallPadding;
-
-/*!
  @abstract Sets the overall (top, left, right, bottom) paddings of the view (defaults to 1.0f)
  */
 @property (nonatomic, assign) CGFloat overallGraphPadding;
@@ -132,19 +101,9 @@ typedef enum {
 @property (nonatomic, assign) CGFloat topGraphPadding;
 
 /*!
- @abstract Sets the top padding of the inner graph view (defaults to 0.0f)
- */
-@property (nonatomic, assign) CGFloat topPadding;
-
-/*!
  @abstract Sets the bottom padding of the view (defaults to 1.0f)
  */
 @property (nonatomic, assign) CGFloat bottomGraphPadding;
-
-/*!
- @abstract Sets the bottom padding of the inner graph view (defaults to 0.0f)
- */
-@property (nonatomic, assign) CGFloat bottomPadding;
 
 /*!
  @abstract Sets the left padding of the view (defaults to 1.0f)
@@ -152,19 +111,9 @@ typedef enum {
 @property (nonatomic, assign) CGFloat leftGraphPadding;
 
 /*!
- @abstract Sets the left padding of the inner graph view (defaults to 0.0f)
- */
-@property (nonatomic, assign) CGFloat leftPadding;
-
-/*!
  @abstract Sets the right padding of the view (defaults to 1.0f)
  */
 @property (nonatomic, assign) CGFloat rightGraphPadding;
-
-/*!
- @abstract Sets the right padding of the inner graph view (defaults to 0.0f)
- */
-@property (nonatomic, assign) CGFloat rightPadding;
 
 /*!
  @abstract Sets the corner radius of the inner graphs bounding box (defaults to 0.0f)
@@ -181,79 +130,7 @@ typedef enum {
                                 block:(void (^)(int maxGraphHeight, CGFloat maxPoint, float divider, CGFloat dataPoint, int i))completionBlock;
 
 + (void)drawWithBasePoint:(CGPoint)basePoint andAngle:(CGFloat)angle andFont:(UIFont *)font andColor:(UIColor *)color theText:(NSString *)theText;
-@end
 
-@protocol JSPlotDelegate <NSObject>
-
-@optional
-/*!
- * @abstract Informs the delegate that the current data point was tapped.
- * It then returns the index of the passed in datasource array for the delegate.
- * Makes it easy to access the objects passed in case the data points were parsed from some object
- */
-- (void)JSPlot:(JSPlot *)graphView didTapDataPointAtIndex:(NSInteger)index inSet:(NSInteger)setNumber;
-
-/*!
- * @abstract Informs the delegate that the current data point was tapped.
- * It then returns the index of the passed in datasource array for the delegate.
- * Makes it easy to access the objects passed in case the data points were parsed from some object
- */
-- (void)JSPlot:(JSPlot *)graphView didTapBarPlotAtIndex:(NSInteger)index inSet:(NSInteger)setNumber;
-@end
-
-@protocol JSPlotDataSource <NSObject>
-
-@optional
-
-/*!
- * @abstract Creates x number of axes evenly spread through the graph whose values are based on the data set
- */
-- (NSInteger)numberOfHorizontalAxes;
-
-/*!
- * @abstract Creates the horizontal axis for the graph view
- */
-- (NSArray *)graphViewWithHorizontalAxisPoints:(JSPlot *)graphView;
-
-/*!
- * @abstract Creates the vertical axis for the graph view
- */
-- (NSArray *)graphViewWithVerticalAxisPoints:(JSPlot *)graphView;
-
-/*!
- * @abstract Creates the gradient within the bar views or line graphs for the specified set number
- */
-- (NSArray *)gradientColorsForPlotSet:(NSInteger)setNumber;
-
-/*!
- * @abstract Creates the gradient within the bar views or line graphs for the specified set number
- */
-- (UIColor *)colorForPlotSet:(NSInteger)setNumber;
-
-/*!
- * @abstract Creates the legend of the graph
- */
-- (NSArray *)graphViewWithLegendDataTypes;
-
-/*!
- * @abstract Creates the animation timer of the data points
- */
-- (CFTimeInterval)animateDurationForDataPoints;
-
-@required
-
-/*!
- * @abstract The number of data sets
- */
-- (NSInteger)numberOfDataSets;
-
-/*!
- * @abstract The number of data points for a specified data set
- */
-- (NSInteger)numberOfDataPointsForSet:(NSInteger)setNumber;
-/*!
- * @abstract The data points of the graph
- * Must pass in NSNumber object to be inputted into the graph
- */
-- (NSNumber *)graphViewDataPointsAtIndex:(NSInteger)index forSetNumber:(NSInteger)setNumber;
++ (CAShapeLayer *)layerWithPath:(CGPathRef)path withFillColor:(UIColor *)fill withStrokeColor:(UIColor *)stroke withLineWidth:(CGFloat)width;
++ (void)animateWithLayer:(CAShapeLayer *)layer animationDuration:(CFTimeInterval)duration;
 @end

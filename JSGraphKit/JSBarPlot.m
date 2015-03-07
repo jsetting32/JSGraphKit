@@ -99,7 +99,7 @@
             [self drawBar:barRect context:ctx withSet:j];
             
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-            [button setTag:i];
+            button.tag = ((i*10000)+30000)+(j*10);
             [button setFrame:barRect];
             [button addTarget:self action:@selector(didTapBarPlot:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:button];
@@ -191,8 +191,11 @@
 #pragma mark - Data Point Pressed Delegate
 - (void)didTapBarPlot:(UIButton *)button
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(JSPlot:didTapBarPlotAtIndex:inSet:)]) {
-        //[self.delegate JSPlot:self didTapBarPlotAtIndex:[button tag]];
+    NSInteger intTag2 = (NSInteger)((button.tag-30000)%10000)/10;
+    NSInteger intTag1 = (NSInteger)((button.tag-(intTag2*10))-30000)/10000;
+
+    if (self.delegate && [self.delegate respondsToSelector:@selector(JSGraphView:didTapBarPlotAtIndex:inSet:)]) {
+        [self.delegate JSGraphView:self didTapBarPlotAtIndex:intTag1 inSet:intTag2];
     }
 }
 

@@ -35,13 +35,6 @@
     self.boxLineColor = [UIColor blackColor];
     self.boxFillColor = [UIColor whiteColor];
     
-    self.overallPadding = 0.0f;
-    self.topPadding = 0.0f;
-    self.bottomPadding = 0.0f;
-    self.leftPadding = 0.0f;
-    self.rightPadding = 0.0f;
-    self.graphCornerRadius = 0.0f;
-    
     self.overallGraphPadding = 0.0f;
     self.topGraphPadding = 0.0f;
     self.bottomGraphPadding = 0.0f;
@@ -53,13 +46,9 @@
 
 - (void)setTheme:(JSGraphTheme)theme
 {
+    [super setTheme:theme];
+    
     switch (theme) {
-        case JSGraphThemeDefault:
-            self.boxLineColor = [UIColor blackColor];
-            self.boxFillColor = [UIColor lightGrayColor];
-            self.axisLabelTextColor = [UIColor blackColor];
-            self.axisLineColor = [UIColor blackColor];
-            break;
         case JSGraphThemeForest:
             self.boxLineColor = [UIColor colorWithRed:30.0f/255.0f green:255.0f/255.0f blue:30.0f/255.0f alpha:1.0f];
             self.boxFillColor = [UIColor colorWithRed:139.0f/255.0f green:200.0f/255.0f blue:173.0f/255.0f alpha:1.0f];
@@ -85,6 +74,10 @@
             self.axisLineColor = [UIColor blackColor];
             break;
         default:
+            self.boxLineColor = [UIColor blackColor];
+            self.boxFillColor = [UIColor lightGrayColor];
+            self.axisLabelTextColor = [UIColor blackColor];
+            self.axisLineColor = [UIColor blackColor];
             break;
     }
 }
@@ -228,6 +221,27 @@
     }
     
     return [max floatValue];
+}
+
++ (CAShapeLayer *)layerWithPath:(CGPathRef)path withFillColor:(UIColor *)fill withStrokeColor:(UIColor *)stroke withLineWidth:(CGFloat)width
+{
+    CAShapeLayer *layer = [CAShapeLayer layer];
+    [layer setPath:path];
+    [layer setFillColor:[fill CGColor]];
+    [layer setStrokeColor:[stroke CGColor]];
+    [layer setLineWidth:width];
+    return layer;
+}
+
++ (void)animateWithLayer:(CAShapeLayer *)layer animationDuration:(CFTimeInterval)duration
+{
+    CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+    pathAnimation.duration = duration;
+    pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
+    pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
+    pathAnimation.repeatCount = 0;
+    pathAnimation.autoreverses = NO;
+    [layer addAnimation:pathAnimation forKey:@"strokeEnd"];
 }
 
 
