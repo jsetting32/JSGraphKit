@@ -137,8 +137,6 @@ Heres the result...
 
 Cool, we can distinguish between the data now!
 
-![Alt text](Showcase.png "Optional Title")
-
 You can also 'do stuff' when a point is tapped. Just set your controller as the delegate and respond to the callbacks. Here is the example:
 
 ```Objective-C
@@ -159,6 +157,9 @@ You can also 'do stuff' when a point is tapped. Just set your controller as the 
     }
 }
 ```
+
+
+![Alt text](Showcase.png "Optional Title")
 
 <br><br>
 <h2>Requirements</h2>
