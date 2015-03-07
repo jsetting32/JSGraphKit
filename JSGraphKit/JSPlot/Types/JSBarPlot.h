@@ -46,4 +46,10 @@
  @abstract Sets the gradient's layer color under the bar plots (defaults to blue then red)
  */
 @property (nonatomic, strong) NSArray *barGradientColors;
+
+/*!
+ @abstract Sets the line graph animation duration (defaults to 0.0f - no animation)
+ This will animate all graphs from the first point (far left) to the last point (far right)
+ */
+@property (nonatomic, assign) CGFloat barAnimationDuration;
 @end

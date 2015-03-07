@@ -43,6 +43,7 @@
     self.automaticallyAdjustBars = YES;
     self.showBarGradientColors = YES;
     self.barGradientColors = @[[UIColor lightGrayColor], [UIColor darkGrayColor]];
+    self.barAnimationDuration = 0.0f;
     [self setTheme:self.graphTheme];
 }
 
@@ -148,6 +149,10 @@
     
     // Create and apply the clipping path
     CGContextBeginPath(ctx);
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, <#CGFloat x#>, <#CGFloat y#>)
+    
     CGContextSetStrokeColorWithColor(ctx, [self.barOutlineColor CGColor]);
 
     CGContextMoveToPoint(ctx, CGRectGetMinX(rect), CGRectGetMinY(rect));

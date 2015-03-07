@@ -98,6 +98,8 @@
     
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
+    self.layer.sublayers = nil;
+    
     [self generateInnerGraphBoundingRect];
     [self drawGradientUnderDataWithRect:self.innerGraphBoundingRect context:ctx];
     [self drawConnectingLinesWithRect:self.innerGraphBoundingRect context:ctx];
@@ -208,17 +210,30 @@
             CGFloat y = rect.origin.y + (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
             CGPoint p1 = CGPointMake(x, y);
 
+            NSInteger numberOfDataPoints = [self.dataSource numberOfDataPointsForSet:j];
+            
             CGMutablePathRef path = CGPathCreateMutable();
             
             CGPathMoveToPoint(path, NULL, x, y);
-            /*
-            if ([dataPoints count] == 2) {
+            float divider = CGRectGetWidth(rect) / (CGFloat)(numberOfDataPoints - 1);
+            if (numberOfDataPoints == 2) {
                 CGFloat x = rect.origin.x + divider;
-                CGContextAddLineToPoint(ctx, x, y);
-                CGContextDrawPath(ctx, kCGPathStroke);
+                CGPathAddLineToPoint(path, NULL, x, y);
+                
+                UIColor *stroke;
+                if ([self.dataSource respondsToSelector:@selector(colorForPlotSet:)]) {
+                    stroke = [self.dataSource colorForPlotSet:j];
+                } else {
+                    stroke = self.lineColor;
+                }
+                
+                CAShapeLayer *layer = [JSPlot layerWithPath:path withFillColor:[UIColor clearColor] withStrokeColor:stroke withLineWidth:self.lineWidth];
+                [self.layer addSublayer:layer];
+                if (!self.lineAnimationDuration <= 0.0f) [JSPlot animateWithLayer:layer animationDuration:self.lineAnimationDuration];
+                CGPathRelease(path);
                 return;
             }
-            
+            /*
             NSMutableArray *minimaIndexes = [NSMutableArray array];
             NSMutableArray *maximaIndexes = [NSMutableArray array];
             NSMutableArray *stack = [NSMutableArray array];
@@ -245,8 +260,7 @@
             NSLog(@"%@", maximaIndexes);
             */
             
-            float divider = CGRectGetWidth(rect) / (CGFloat)([self.dataSource numberOfDataPointsForSet:j] - 1);
-            for (int i = 1; i < [self.dataSource numberOfDataPointsForSet:j]; i++) {
+            for (int i = 1; i < numberOfDataPoints; i++) {
                 CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:i forSetNumber:j] floatValue];
                 CGFloat x = rect.origin.x + i * divider;
                 CGFloat y = rect.origin.y + (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
@@ -278,33 +292,6 @@
     } else {
         for (int j = 0; j < [self.dataSource numberOfDataSets]; j++) {
             
-            /*
-            if ([self.dataSource respondsToSelector:@selector(colorForPlotSet:)]) {
-                CGContextSetStrokeColorWithColor(ctx, [[self.dataSource colorForPlotSet:j] CGColor]);
-            } else {
-                CGContextSetStrokeColorWithColor(ctx, [self.lineColor CGColor]);
-            }
-            
-            CGContextBeginPath(ctx);
-            
-            float divider = CGRectGetWidth(rect) / (CGFloat)([self.dataSource numberOfDataPointsForSet:j] - 1);
-            for (int i = 0; i < [self.dataSource numberOfDataPointsForSet:j]; i++) {
-                CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:i forSetNumber:j] floatValue];
-                CGFloat x = rect.origin.x + i * divider;
-                CGFloat y = rect.origin.y + (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
-                if (i == 0) {
-                    CGContextMoveToPoint(ctx, x, y);
-                } else {
-                    CGContextAddLineToPoint(ctx, x, y);
-                }
-            }
-            CGContextDrawPath(ctx, kCGPathStroke);
-        
-            */
-            
-            //CGContextRef ctx = UIGraphicsGetCurrentContext();
-            
-            
             CGMutablePathRef path = CGPathCreateMutable();
             float divider = CGRectGetWidth(rect) / (CGFloat)([self.dataSource numberOfDataPointsForSet:j] - 1);
             for (int i = 0; i < [self.dataSource numberOfDataPointsForSet:j]; i++) {
@@ -324,6 +311,7 @@
             } else {
                 stroke = self.lineColor;
             }
+            
             
             CAShapeLayer *layer = [JSPlot layerWithPath:path withFillColor:[UIColor clearColor] withStrokeColor:stroke withLineWidth:self.lineWidth];
             [self.layer addSublayer:layer];
@@ -419,6 +407,7 @@
         CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:0 forSetNumber:j] floatValue];
         float y = (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
         CGContextBeginPath(ctx);
+        
         CGContextMoveToPoint(ctx, rect.origin.x, startPoint.y);
         CGContextAddLineToPoint(ctx, rect.origin.x, rect.origin.y + y);
         float divider = CGRectGetWidth(rect) / (CGFloat)([self.dataSource numberOfDataPointsForSet:j] - 1);
@@ -438,8 +427,6 @@
         CGColorSpaceRelease(colorspace);
         CGGradientRelease(gradient);
     }
-    
-    
 }
 
 - (void)generateInnerGraphBoundingRect

@@ -289,10 +289,10 @@
         [_scatterPlot setLeftGraphPadding:10.0f];
         [_scatterPlot setRightGraphPadding:10.0f];
         [_scatterPlot setPointRadius:5.0f];
-        [_scatterPlot setLineWidth:2.0f];
+        [_scatterPlot setLineWidth:5.0f];
         [_scatterPlot setShowHorizontalAxis:YES];
         [_scatterPlot setBoxLineWidth:1.0f];
-        [_scatterPlot setShowPointLabels:YES];
+        [_scatterPlot setShowPointLabels:NO];
         [_scatterPlot setPointLabelAngle:0.0f];
         [_scatterPlot setPointLabelOffset:CGPointMake(10, -10)];
         [_scatterPlot setShowLineCurvature:NO];

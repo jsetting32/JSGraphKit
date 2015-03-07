@@ -229,6 +229,8 @@
     [layer setPath:path];
     [layer setFillColor:[fill CGColor]];
     [layer setStrokeColor:[stroke CGColor]];
+    [layer setLineCap:kCALineCapRound];
+    [layer setLineJoin:kCALineJoinRound];
     [layer setLineWidth:width];
     return layer;
 }
