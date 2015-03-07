@@ -16,6 +16,11 @@ It defaults to 0.0f (no animation), so just specify the duration when initializi
 [self.scatterPlot setLineAnimationDuration:5.0f];
 ```
 - Showing line curvature with scatter plot lines.
+<h4>Now you can add curves!</h4>
+You can now set a property within the scatter plot object to YES and wallah! You have curvy lines. There are some issues with it, but if you have fluxuating data points (multiple values that increase and decrease) it will look nice. But if you have, lets say 3 points that are descending, it wont look good. Working on fixing this issue. So this feature is in beta I guess.
+```Objective-C
+[self.scatterPlot setShowLineCurvature:YES];
+```
 - More to come!
 
 <h3>Example</h3>
