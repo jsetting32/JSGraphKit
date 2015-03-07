@@ -6,8 +6,15 @@ The library currently consists of two views, JSScatterPlot and JSBarPlot, both o
 
 Please feel free to check out the header files of JSPlot, JSScatterPlot, JSBarPlot, to see all the properties and delegate/datasource methods you can set to make your graph elegant and responsive!
 
+Also, if anyone has any suggestions, please feel free to send me an email or whatever.
+
 <h3>Things to further implement</h3>
 - Animating data on the view (e.g animate bars progressing up from 0, drawing the scatter plot points sequentially then connecting them after there drawn)
+<h4>You can now animate the line graph</h4>
+It defaults to 0.0f (no animation), so just specify the duration when initializing the scatter plot object. It doesn't work 100%, it overlaps the data points (it shouldn't) and there more animation functionality to work on.
+```Objective-C
+[self.scatterPlot setLineAnimationDuration:5.0f];
+```
 - Showing line curvature with scatter plot lines.
 - More to come!
 
