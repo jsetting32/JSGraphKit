@@ -102,8 +102,34 @@ Lets see what this does...
 
 ![Alt text](Example3.png "Optional Title")
 
-Nice! We have lines! The Vertical Axis is in development now. You can use them but I advise you to wait or contribute!
+Nice! We have lines! The Vertical Axis is in development now. You can use them but I advise you to wait or contribute! 
 
+So now lets make these multiple data sets distinct between eachother with colors! So there is another datasource protocol you need to implement for this to occur. Here is the example.
 
+```Objective-C
+- (UIColor *)colorForPlotSet:(NSInteger)setNumber
+{
+    switch (setNumber) {
+        case 0:
+            return [UIColor redColor];
+            break;
+        case 1:
+            return [UIColor blueColor];
+            break;
+        case 2:
+            return [UIColor greenColor];
+            break;
+        default:
+            break;
+    }
+    return nil;
+}
+```
+
+Heres the result...
+
+![Alt text](Example4.png "Optional Title")
+
+Cool, we can distinguish between the data now!
 
 ![Alt text](Showcase.png "Optional Title")
