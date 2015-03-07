@@ -5,20 +5,20 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>EEAC5D43-DB1F-4E55-A32A-C777DFB95AE6</string>
+	<string>AA72ADEA-A084-4F1C-9B68-1F0FA44E0B94</string>
 	<key>IDESourceControlProjectName</key>
-	<string>JSGraphKit</string>
+	<string>Example</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>007EA6807DE919D34C6512AA6448F19337A6AD80</key>
 		<string>https://github.com/jsetting32/JSGraphKit.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>JSGraphKit.xcodeproj</string>
+	<string>Example/Example.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>007EA6807DE919D34C6512AA6448F19337A6AD80</key>
-		<string>../..</string>
+		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/jsetting32/JSGraphKit.git</string>

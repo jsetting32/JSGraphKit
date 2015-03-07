@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>JSGraphKit.xcscheme</key>
+		<key>Example.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,12 +12,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1EA533A01AAAB34F003C3541</key>
+		<key>1EC9A1081AAB0472004DE64D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1EA533B91AAAB34F003C3541</key>
+		<key>1EC9A1211AAB0472004DE64D</key>
 		<dict>
 			<key>primary</key>
 			<true/>

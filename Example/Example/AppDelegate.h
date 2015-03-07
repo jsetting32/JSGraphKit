@@ -1,8 +1,8 @@
 //
 //  AppDelegate.h
-//  JSGraphKit
+//  Example
 //
-//  Created by John Setting on 3/6/15.
+//  Created by John Setting on 3/7/15.
 //  Copyright (c) 2015 John Setting. All rights reserved.
 //
 

@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1EA533A01AAAB34F003C3541"
-               BuildableName = "JSGraphKit.app"
-               BlueprintName = "JSGraphKit"
-               ReferencedContainer = "container:JSGraphKit.xcodeproj">
+               BlueprintIdentifier = "1EC9A1081AAB0472004DE64D"
+               BuildableName = "Example.app"
+               BlueprintName = "Example"
+               ReferencedContainer = "container:Example.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -28,10 +28,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1EA533B91AAAB34F003C3541"
-               BuildableName = "JSGraphKitTests.xctest"
-               BlueprintName = "JSGraphKitTests"
-               ReferencedContainer = "container:JSGraphKit.xcodeproj">
+               BlueprintIdentifier = "1EC9A1211AAB0472004DE64D"
+               BuildableName = "ExampleTests.xctest"
+               BlueprintName = "ExampleTests"
+               ReferencedContainer = "container:Example.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,20 +46,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1EA533B91AAAB34F003C3541"
-               BuildableName = "JSGraphKitTests.xctest"
-               BlueprintName = "JSGraphKitTests"
-               ReferencedContainer = "container:JSGraphKit.xcodeproj">
+               BlueprintIdentifier = "1EC9A1211AAB0472004DE64D"
+               BuildableName = "ExampleTests.xctest"
+               BlueprintName = "ExampleTests"
+               ReferencedContainer = "container:Example.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1EA533A01AAAB34F003C3541"
-            BuildableName = "JSGraphKit.app"
-            BlueprintName = "JSGraphKit"
-            ReferencedContainer = "container:JSGraphKit.xcodeproj">
+            BlueprintIdentifier = "1EC9A1081AAB0472004DE64D"
+            BuildableName = "Example.app"
+            BlueprintName = "Example"
+            ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -75,10 +75,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1EA533A01AAAB34F003C3541"
-            BuildableName = "JSGraphKit.app"
-            BlueprintName = "JSGraphKit"
-            ReferencedContainer = "container:JSGraphKit.xcodeproj">
+            BlueprintIdentifier = "1EC9A1081AAB0472004DE64D"
+            BuildableName = "Example.app"
+            BlueprintName = "Example"
+            ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -93,10 +93,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1EA533A01AAAB34F003C3541"
-            BuildableName = "JSGraphKit.app"
-            BlueprintName = "JSGraphKit"
-            ReferencedContainer = "container:JSGraphKit.xcodeproj">
+            BlueprintIdentifier = "1EC9A1081AAB0472004DE64D"
+            BuildableName = "Example.app"
+            BlueprintName = "Example"
+            ReferencedContainer = "container:Example.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
