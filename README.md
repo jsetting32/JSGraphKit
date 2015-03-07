@@ -4,6 +4,8 @@ Lightweight Graphing Library using CoreGraphics.
 <h2>How it works</h2>
 The library currently consists of two views, JSScatterPlot and JSBarPlot, both of which are subclasses of JSPlot. It's up to the developer to set the paddings of the graphs and data. The API makes it simple and there are default themes to use. Also, the graphs adjust according to its bounds, making porting the library to your project easy and simply by just setting the frame and feeding it data.
 
+Please feel free to check out the header files of JSPlot, JSScatterPlot, JSBarPlot, to see all the properties and delegate/datasource methods you can set to make your graph elegant and responsive!
+
 <h3>Things to further implement</h3>
 - Animating data on the view (e.g animate bars progressing up from 0, drawing the scatter plot points sequentially then connecting them after there drawn)
 - Showing line curvature with scatter plot lines.
