@@ -59,8 +59,7 @@ Heres the result:
 
 ![Alt text](Showcase1.png "Optional Title")
 
-
-
+- Make the graphs work with time formatted data
 
 - More to come!
 
