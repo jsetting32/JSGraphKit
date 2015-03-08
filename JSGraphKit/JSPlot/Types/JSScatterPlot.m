@@ -406,7 +406,6 @@
             CGRect theRect = CGRectMake(rect.origin.x + (divider - self.pointRadius * 2), rect.origin.y + (y - self.pointRadius * 2), 4 * self.pointRadius, 4 * self.pointRadius);
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.tag = ((i*10000)+30000)+(j*10);
-            [button setBackgroundColor:[UIColor whiteColor]];
             [button setFrame:theRect];
             [button addTarget:self action:@selector(didTapDataPoint:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:button];
