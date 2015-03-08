@@ -179,7 +179,7 @@
             float divider = CGRectGetWidth(rect) / 2;
             CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:0 forSetNumber:j] floatValue];
             float y = (rect.size.height - rect.size.height * (dataPoint / maxPoint));
-            CGRect theRect = CGRectMake(rect.origin.x + (divider - self.pointRadius), rect.origin.y + (y - self.pointRadius), 2 * self.pointRadius, 2 * self.pointRadius);
+            CGRect theRect = CGRectMake(rect.origin.x + (divider - (self.pointRadius / 2.0f)), rect.origin.y + (y - (self.pointRadius / 2.0f)), self.pointRadius, self.pointRadius);
             CGContextAddEllipseInRect(ctx, theRect);
         } else {
             float divider = CGRectGetWidth(rect) / (CGFloat)([self.dataSource numberOfDataPointsForSet:j] - 1);
