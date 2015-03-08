@@ -177,6 +177,25 @@
     CGContextStrokeRect(ctx, self.boundingRect);
 }
 
+- (void)generateInnerGraphBoundingRect
+{
+    CGFloat top = (self.overallGraphPadding != 0.0f) ? self.overallGraphPadding : self.topGraphPadding;
+    CGFloat bottom = self.boundingRect.size.height - ((self.overallGraphPadding != 0.0f) ? self.overallGraphPadding * 2 : self.bottomGraphPadding * 2);
+    bottom -= (self.overallGraphPadding != 0.0f) ? self.overallGraphPadding : self.topGraphPadding;
+    CGFloat left = (self.overallGraphPadding != 0.0f) ? self.overallGraphPadding : self.leftGraphPadding;
+    CGFloat right = (self.overallGraphPadding != 0.0f) ? (CGRectGetWidth(self.boundingRect) - self.overallGraphPadding * 2) : (CGRectGetWidth(self.boundingRect) - self.rightGraphPadding * 2);
+    
+    CGRect rect = self.boundingRect;
+    
+    rect.origin.y += top;
+    rect.origin.x += left;
+    rect.size.width = right;
+    rect.size.height = bottom;
+    
+    
+    self.innerGraphBoundingRect = rect;
+}
+
 + (void)drawWithBasePoint:(CGPoint)basePoint andAngle:(CGFloat)angle andFont:(UIFont *)font andColor:(UIColor *)color theText:(NSString *)theText
 {
     CGSize textSize = [theText sizeWithAttributes:@{NSFontAttributeName:font}];

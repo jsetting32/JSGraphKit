@@ -123,8 +123,6 @@
                 break;
         }
     }
-    
-
 }
 
 - (NSNumber *)graphViewDataPointsAtIndex:(NSInteger)index forSetNumber:(NSInteger)setNumber
@@ -275,6 +273,7 @@
         [_barPlot setLeftGraphPadding:10.0f];
         [_barPlot setRightGraphPadding:10.0f];
         [_barPlot setShowHorizontalAxis:YES];
+        [_barPlot setShowLegendView:YES];
     }
     return _barPlot;
 }
@@ -285,9 +284,14 @@
         _scatterPlot = [[JSScatterPlot alloc] initWithFrame:CGRectMake(10, 400, self.view.frame.size.width - 20, 250)];
         [_scatterPlot setDataSource:self];
         [_scatterPlot setDelegate:self];
-        [_scatterPlot setOverallPadding:40.0f];
+        [_scatterPlot setTopPadding:40.0f];
+        [_scatterPlot setLeftPadding:40.0f];
+        [_scatterPlot setRightPadding:60.0f];
+        [_scatterPlot setBottomPadding:40.0f];
+        
         [_scatterPlot setLeftGraphPadding:10.0f];
         [_scatterPlot setRightGraphPadding:10.0f];
+        
         [_scatterPlot setPointRadius:5.0f];
         [_scatterPlot setLineWidth:5.0f];
         [_scatterPlot setShowHorizontalAxis:YES];
@@ -295,10 +299,11 @@
         [_scatterPlot setShowPointLabels:NO];
         [_scatterPlot setPointLabelAngle:0.0f];
         [_scatterPlot setPointLabelOffset:CGPointMake(10, -10)];
-        [_scatterPlot setShowLineCurvature:NO];
+        [_scatterPlot setShowLineCurvature:YES];
         [_scatterPlot setLineAnimationDuration:5.0f];
         [_scatterPlot setGraphCornerRadius:5.0f];
-        [_scatterPlot setShowGradientUnderLinePlot:NO];
+        [_scatterPlot setShowLegendView:YES];
+        [_scatterPlot setLegendOffset:CGPointMake(_scatterPlot.frame.size.width - 55, _scatterPlot.frame.size.height / 2.0f - 55/2.0f)];
     }
     return _scatterPlot;
 }

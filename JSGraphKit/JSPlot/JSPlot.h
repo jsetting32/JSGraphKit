@@ -11,6 +11,8 @@
 
 @interface JSPlot : JSGraphView
 
+@property (nonatomic, assign) CGRect innerGraphBoundingRect;
+
 ///--------------------------------------
 /// @name View Methods
 ///--------------------------------------
@@ -125,6 +127,7 @@
  */
 - (CGFloat)getMaxValueFromDataPoints;
 
+- (void)generateInnerGraphBoundingRect;
 
 - (void)iteratorForDataPointsWithRect:(CGRect)rect
                                 block:(void (^)(int maxGraphHeight, CGFloat maxPoint, float divider, CGFloat dataPoint, int i))completionBlock;

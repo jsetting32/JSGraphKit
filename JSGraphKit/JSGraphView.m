@@ -24,31 +24,27 @@
     self.bottomPadding = 0.0f;
     self.leftPadding = 0.0f;
     self.rightPadding = 0.0f;
+    
+    self.legendLabelFont = [UIFont fontWithName:@"AppleSDGothicNeo-Light" size:8.0f];
+    self.legendLabelTextColor = [UIColor blackColor];
+    self.legendLabelAngle = 0.0f;
+    self.legendLabelOffset = CGPointMake(0, 0);
+    self.legendColorOffset = CGPointMake(0, 0);
+    self.legendColorBorderColor = [UIColor blackColor];
+    self.legendDimension = CGSizeMake(50, 50);
+    self.legendOffset = CGPointMake(0, 0);
+    self.legendBackgroundColor = [UIColor whiteColor];
+    self.legendCornerRadius = 0.0f;
+    self.legendBorderColor = [UIColor blackColor];
+    self.legendBorderWidth = 1.0f;
+    
     [self setTheme:self.graphTheme];
-    [self addSubview:self.legend];
     return self;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame withTheme:(JSGraphTheme)theme
 {
     self.graphTheme = theme;
-    return [self initWithFrame:frame];
-}
-
-- (instancetype)initWithFrame:(CGRect)frame withTheme:(JSGraphTheme)theme withLegendStrings:(NSArray *)legendStrings withColors:(NSArray *)colors
-{
-    self.legend = [[JSLegend alloc] initWithLegendStrings:legendStrings withColors:colors];
-    [self.legend setBackgroundColor:[UIColor whiteColor]];
-    [self.legend setFrame:CGRectMake(0, 0, 30, 30)];
-    self.graphTheme = theme;
-    return [self initWithFrame:frame];
-}
-
-- (instancetype)initWithFrame:(CGRect)frame withLegendStrings:(NSArray *)legendStrings withColors:(NSArray *)colors
-{
-    self.legend = [[JSLegend alloc] initWithLegendStrings:legendStrings withColors:colors];
-    [self.legend setBackgroundColor:[UIColor whiteColor]];
-    [self.legend setFrame:CGRectMake(0, 0, 30, 30)];
     return [self initWithFrame:frame];
 }
 
@@ -78,6 +74,32 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
+    if (self.showLegendView) {
+        NSMutableArray *colors = [NSMutableArray array];
+        for (int i = 0; i < [self.dataSource numberOfDataSets]; i++) {
+            NSAssert([self.dataSource colorForPlotSet:i], ([NSString stringWithFormat:@"You havent specified a color for dataset at index %i", i]));
+            NSAssert([[self.dataSource graphViewWithLegendDataTypes] objectAtIndex:i], ([NSString stringWithFormat:@"You havent specified a type name for dataset at index %i", i]));
+            [colors addObject:[self.dataSource colorForPlotSet:i]];
+        }
+        
+        self.legend = [[JSLegend alloc] initWithLegendStrings:[self.dataSource graphViewWithLegendDataTypes] withColors:colors];
+        [self.legend setBackgroundColor:self.legendBackgroundColor];
+        
+        self.legend.legendLabelFont = self.legendLabelFont;
+        self.legend.legendLabelAngle = self.legendLabelAngle;
+        self.legend.legendLabelOffset = self.legendLabelOffset;
+        self.legend.legendLabelTextColor = self.legendLabelTextColor;
+        self.legend.legendColorOffset = self.legendColorOffset;
+        self.legend.legendColorBorderColor = self.legendColorBorderColor;
+        
+        [self.legend.layer setCornerRadius:self.legendCornerRadius];
+        [self.legend.layer setMasksToBounds:YES];
+        [self.legend.layer setBorderWidth:self.legendBorderWidth];
+        [self.legend.layer setBorderColor:[self.legendBorderColor CGColor]];
+        [self.legend setFrame:CGRectMake(self.legendOffset.x, self.legendOffset.y, self.legendDimension.width, self.legendDimension.height)];
+        [self addSubview:self.legend];
+    }
 }
 
 @end

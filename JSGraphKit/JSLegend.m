@@ -35,23 +35,37 @@
     
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
+    
     for (int i = 0; i < [self.legendStrings count]; i++) {
         
         UIColor *color = [self.colors objectAtIndex:i];
         NSString *text = [self.legendStrings objectAtIndex:i];
         
-        CGRect colorViewRect = CGRectMake(self.legendColorOffset.x, i * 20 + self.legendColorOffset.y, 20, 20);
+        
+        
+        CGRect colorViewRect = CGRectMake(self.legendColorOffset.x,
+                                          i * ((float)self.frame.size.width / [self.legendStrings count]) + self.legendColorOffset.y,
+                                          (float)self.frame.size.width / [self.legendStrings count],
+                                          (float)self.frame.size.width / [self.legendStrings count]);
+        CGFloat colorRectEnd = colorViewRect.origin.x + colorViewRect.size.width;
         CGContextBeginPath(ctx);
         CGContextSetStrokeColorWithColor(ctx, [self.legendColorBorderColor CGColor]);
         CGContextSetFillColorWithColor(ctx, [color CGColor]);
         CGContextStrokeRect(ctx, colorViewRect);
         CGContextFillRect(ctx, colorViewRect);
         
-        CGRect textRect = CGRectMake(20, i * 20, self.frame.size.width - 20, 20);
-        CGPoint p = CGPointMake(textRect.origin.x + self.legendLabelOffset.x, textRect.origin.y + self.legendLabelOffset.y);
-        [JSPlot drawWithBasePoint:p andAngle:self.legendLabelAngle andFont:self.legendLabelFont andColor:self.legendLabelTextColor theText:text];
+        CGRect textRect = CGRectMake(self.legendLabelOffset.x + colorRectEnd,
+                                     self.legendLabelOffset.y + i * ((float)self.frame.size.width / [self.legendStrings count]), self.frame.size.width - colorRectEnd, ((float)self.frame.size.width / [self.legendStrings count]));
+        
+        UILabel *textLabel = [[UILabel alloc] initWithFrame:textRect];
+        [textLabel setText:text];
+        [textLabel setTextAlignment:NSTextAlignmentCenter];
+        [textLabel setTextColor:self.legendLabelTextColor];
+        [textLabel setAdjustsFontSizeToFitWidth:YES];
+        [textLabel setFont:self.legendLabelFont];
+        [textLabel setTransform:CGAffineTransformMakeRotation(self.legendLabelAngle)];
+        [self addSubview:textLabel];
     }
 }
-
 
 @end

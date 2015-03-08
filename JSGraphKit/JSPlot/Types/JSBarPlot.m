@@ -149,10 +149,7 @@
     
     // Create and apply the clipping path
     CGContextBeginPath(ctx);
-    
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathMoveToPoint(path, NULL, <#CGFloat x#>, <#CGFloat y#>)
-    
+        
     CGContextSetStrokeColorWithColor(ctx, [self.barOutlineColor CGColor]);
 
     CGContextMoveToPoint(ctx, CGRectGetMinX(rect), CGRectGetMinY(rect));
@@ -172,24 +169,6 @@
     // Release the resources
     CGColorSpaceRelease(colorspace);
     CGGradientRelease(gradient);
-}
-
-- (void)generateInnerGraphBoundingRect
-{
-    CGFloat top = (self.overallGraphPadding != 0.0f) ? self.overallGraphPadding : self.topGraphPadding;
-    CGFloat bottom = [self bounds].size.height - ((self.overallGraphPadding != 0.0f) ? self.overallGraphPadding * 2 : self.bottomGraphPadding * 2);
-    bottom -= (self.overallGraphPadding != 0.0f) ? self.overallGraphPadding : self.topGraphPadding;
-    CGFloat left = (self.overallGraphPadding != 0.0f) ? self.overallGraphPadding : self.leftGraphPadding;
-    CGFloat right = (self.overallGraphPadding != 0.0f) ? (CGRectGetWidth(self.bounds) - self.overallGraphPadding * 2) : (CGRectGetWidth(self.bounds) - self.rightGraphPadding * 2);
-    
-    CGRect rect = CGRectMake(left, top, right, bottom);
-    
-    rect.origin.y += self.boundingRect.origin.y;
-    rect.origin.x += self.boundingRect.origin.x;
-    rect.size.width = right - (self.boundingRect.origin.x * 2);
-    rect.size.height = bottom - (self.boundingRect.origin.y * 2);
-    
-    self.innerGraphBoundingRect = rect;
 }
 
 #pragma mark - Data Point Pressed Delegate

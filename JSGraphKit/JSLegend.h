@@ -45,5 +45,4 @@
  */
 @property (nonatomic, retain) UIColor * legendColorBorderColor;
 
-
 @end

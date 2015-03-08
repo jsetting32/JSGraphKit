@@ -39,11 +39,6 @@ typedef enum {
 - (NSInteger)numberOfHorizontalAxes;
 
 /*!
- * @abstract Creates the horizontal axis for the graph view
- */
-- (NSArray *)graphViewWithHorizontalAxisPoints:(JSGraphView *)graphView;
-
-/*!
  * @abstract Creates the vertical axis for the graph view
  */
 - (NSArray *)graphViewWithVerticalAxisPoints:(JSGraphView *)graphView;
@@ -105,8 +100,6 @@ typedef enum {
  * @params theme: The theme the graph will draw (defaults to JSGraphThemeDefault)
  */
 - (instancetype)initWithFrame:(CGRect)frame withTheme:(JSGraphTheme)theme;
-- (instancetype)initWithFrame:(CGRect)frame withTheme:(JSGraphTheme)theme withLegendStrings:(NSArray *)legendStrings withColors:(NSArray *)colors;
-- (instancetype)initWithFrame:(CGRect)frame withLegendStrings:(NSArray *)legendStrings withColors:(NSArray *)colors;
 
 /*!
  @abstract Set the theme
@@ -146,5 +139,69 @@ typedef enum {
  @abstract Sets the right padding of the view (defaults to 1.0f)
  */
 @property (nonatomic, assign) CGFloat rightPadding;
+
+///--------------------------------------
+/// @name Legend View Methods
+///--------------------------------------
+
+/*!
+ @abstract Sets the graph's legend label font (defaults to AppleSDGothicNeo-Light - 8.0f)
+ */
+@property (nonatomic, retain) UIFont * legendLabelFont;
+
+/*!
+ @abstract Sets the graph's legend label text color (defaults to black)
+ */
+@property (nonatomic, retain) UIColor * legendLabelTextColor;
+
+/*!
+ @abstract Sets the graph's legend label angle (defaults to 0.0f)
+ */
+@property (nonatomic, assign) CGFloat legendLabelAngle;
+
+/*!
+ @abstract Sets the graph's legend label offset (defaults to (0,0) )
+ */
+@property (nonatomic, assign) CGPoint legendLabelOffset;
+
+/*!
+ @abstract Sets the graph's legend color view offset (defaults to (0,0) )
+ */
+@property (nonatomic, assign) CGPoint legendColorOffset;
+
+/*!
+ @abstract Sets the graph's legend color view border color (defaults to black)
+ */
+@property (nonatomic, retain) UIColor * legendColorBorderColor;
+
+/*!
+ @abstract Sets the width and height of the legend view (defaults to {50,50})
+ */
+@property (nonatomic, assign) CGSize legendDimension;
+
+/*!
+ @abstract Sets the offset of the legend view (defaults to {0,0})
+ */
+@property (nonatomic, assign) CGPoint legendOffset;
+
+/*!
+ @abstract Sets the background color of the legend view (defaults to white)
+ */
+@property (nonatomic, retain) UIColor *legendBackgroundColor;
+
+/*!
+ @abstract Sets the legend corner radius (defaults to 0.0f - no rounding)
+ */
+@property (nonatomic, assign) CGFloat legendCornerRadius;
+
+/*!
+ @abstract Sets the legend border color (defaults to black)
+ */
+@property (nonatomic, retain) UIColor *legendBorderColor;
+
+/*!
+ @abstract Sets the legend border width (defaults to 1.0f)
+ */
+@property (nonatomic, assign) CGFloat legendBorderWidth;
 
 @end
