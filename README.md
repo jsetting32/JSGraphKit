@@ -21,6 +21,47 @@ You can now set a property within the scatter plot object to YES and wallah! You
 ```Objective-C
 [self.scatterPlot setShowLineCurvature:YES];
 ```
+<h4>You can now add a legend!</h4>
+Simply set the showLegend property to yes. As long as you specify the names for the legend and the colors associated, the legend displays with ease.
+```Objective-C
+
+// When initializing the plot (can be either Bar or Line)
+[self.scatterPlot setShowLegendView:YES];
+
+- (UIColor *)colorForPlotSet:(NSInteger)setNumber
+{
+    switch (setNumber) {
+        case 0:
+            return [UIColor redColor];
+            break;
+        case 1:
+            return [UIColor blueColor];
+            break;
+        case 2:
+            return [UIColor greenColor];
+            break;
+        default:
+            break;
+    }
+    return nil;
+}
+
+- (NSArray *)graphViewWithLegendDataTypes
+{
+    return @[@"AAPL", @"GOOG", @"YHOO"];
+}
+
+[_scatterPlot setLegendOffset:CGPointMake(_scatterPlot.frame.size.width - 55, _scatterPlot.frame.size.height / 2.0f - 55/2.0f)];
+```
+You can also set the frame of the legend by modifying the legendOffset and legendDimension properties, I just showed you how to change the position (offset) of the plot.
+
+Heres the result:
+
+![Alt text](Showcase1.png "Optional Title")
+
+
+
+
 - More to come!
 
 <h3>Example</h3>
@@ -173,7 +214,7 @@ You can also 'do stuff' when a point is tapped. Just set your controller as the 
 ```
 
 
-![Alt text](Showcase.png "Optional Title")
+![Alt text](Showcase0.png "Optional Title")
 
 <br><br>
 <h2>Requirements</h2>
