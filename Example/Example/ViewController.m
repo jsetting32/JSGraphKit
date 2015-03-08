@@ -25,7 +25,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.dataset1 = @[@100, @200, @400, @500, @100, @60, @40, @200, @50, @20, @60, @100, @200];
+    self.dataset1 = @[];
+    //self.dataset1 = @[@100, @200, @400, @500, @100, @60, @40, @200, @50, @20, @60, @100, @200];
     self.dataset2 = @[@21, @30, @440, @550, @110, @60, @400, @20, @450, @120, @20, @120, @20];
     self.dataset3 = @[@400, @500, @10, @210, @520, @400, @300, @120, @230, @500, @210, @240, @50];
     
@@ -223,7 +224,7 @@
 
 - (NSInteger)numberOfDataSets
 {
-    return 3;
+    return 1;
 }
 
 /*
@@ -233,14 +234,27 @@
 }
 */
 
+- (CFTimeInterval)animateDurationForDataPointsInSet:(NSInteger)setNumber
+{
+    switch (setNumber) {
+        case 0:
+            return 2;
+            break;
+        case 1:
+            return 3;
+            break;
+        case 2:
+            return 1;
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
+
 - (NSInteger)numberOfHorizontalAxes
 {
     return 10;
-}
-
-- (CFTimeInterval)animateDurationForDataPoints
-{
-    return 1.0f;
 }
 
 - (void)JSGraphView:(JSGraphView *)graphView didTapDataPointAtIndex:(NSInteger)index inSet:(NSInteger)setNumber
@@ -274,6 +288,7 @@
         [_barPlot setRightGraphPadding:10.0f];
         [_barPlot setShowHorizontalAxis:YES];
         [_barPlot setShowLegendView:YES];
+        [_barPlot setBarGradientColorDirection:JSBarGradientDirectionVertical];
     }
     return _barPlot;
 }

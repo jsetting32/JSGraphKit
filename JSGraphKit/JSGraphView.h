@@ -67,7 +67,7 @@ typedef enum {
 /*!
  * @abstract Creates the animation timer of the data points
  */
-- (CFTimeInterval)animateDurationForDataPoints;
+- (CFTimeInterval)animateDurationForDataPointsInSet:(NSInteger)setNumber;
 
 @required
 

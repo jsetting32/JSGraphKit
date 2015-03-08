@@ -10,6 +10,11 @@
 #import "JSGraphView.h"
 #import "JSPlot.h"
 
+typedef enum {
+    JSBarGradientDirectionHorizontal,
+    JSBarGradientDirectionVertical
+} JSBarGradientDirection;
+
 @interface JSBarPlot : JSPlot
 
 ///--------------------------------------
@@ -32,6 +37,11 @@
 @property (nonatomic, retain) UIColor * barOutlineColor;
 
 /*!
+ @abstract Sets the bar padding (defaults to 1.0f, (e.g If there are 3 data sets, the first three bars will be seperated x amount from the second set of bars))
+ */
+@property (nonatomic, assign) CGFloat barPadding;
+
+/*!
  @abstract Automatically adjusts bar's widths according to the width of the graph (defaults to YES)
  (e.g if the graph is 300px wide, and 3 data points are passed in, the bars will be (300/3) px wide)
  */
@@ -41,6 +51,11 @@
  @abstract Sets the graph view to show a gradient for the bar plots (defaults to NO)
  */
 @property (nonatomic, assign) BOOL showBarGradientColors;
+
+/*!
+ @abstract Sets the graph views bars to have a gradient in a specified direction (defaults to horizontal)
+ */
+@property (nonatomic, assign) JSBarGradientDirection barGradientColorDirection;
 
 /*!
  @abstract Sets the gradient's layer color under the bar plots (defaults to blue then red)

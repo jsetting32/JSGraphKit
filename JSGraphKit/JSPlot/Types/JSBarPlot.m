@@ -40,8 +40,10 @@
     self.barWidth = 20.0f;
     self.barColor = [UIColor whiteColor];
     self.barOutlineColor = [UIColor blackColor];
+    self.barPadding = 10.0f;
     self.automaticallyAdjustBars = YES;
     self.showBarGradientColors = YES;
+    self.barGradientColorDirection = JSBarGradientDirectionHorizontal;
     self.barGradientColors = @[[UIColor lightGrayColor], [UIColor darkGrayColor]];
     self.barAnimationDuration = 0.0f;
     [self setTheme:self.graphTheme];
@@ -76,26 +78,42 @@
 {
     [super drawRect:rect];
     
+    if (![self.dataSource respondsToSelector:@selector(numberOfDataSets)]) {
+        NSAssert(NO, @"It is required to implement the data source 'numberOfDataSets' selector");
+    }
+    
+    if (![self.dataSource respondsToSelector:@selector(numberOfDataPointsForSet:)]) {
+        NSAssert(NO, @"It is required to implement the data source 'numberOfDataPointsForSet:' selector");
+    }
+    
     CGContextRef ctx = UIGraphicsGetCurrentContext();
-    [self generateInnerGraphBoundingRect];
-    [self drawBarPlotWithRect:self.innerGraphBoundingRect context:ctx];
+    [self drawBarPlotWithRect:[self generateInnerGraphBoundingRect] context:ctx];
 }
 
 - (void)drawBarPlotWithRect:(CGRect)rect context:(CGContextRef)ctx
 {
-    // Draw the bars
+
+    
     int maxGraphHeight = rect.size.height;
     CGFloat maxPoint = [self getMaxValueFromDataPoints];
     
-    for (int j = 0; j < [self.dataSource numberOfDataSets]; j++) {
-        for (int i = 0; i < [self.dataSource numberOfDataPointsForSet:j]; i++)
+    NSInteger numberOfSets = [self.dataSource numberOfDataSets];
+    
+    for (int j = 0; j < numberOfSets; j++) {
+        
+        NSInteger numberOfPoints = [self.dataSource numberOfDataPointsForSet:j];
+        
+        for (int i = 0; i < numberOfPoints; i++)
         {
-            float divider = CGRectGetWidth(rect) / ([self.dataSource numberOfDataPointsForSet:j] * [self.dataSource numberOfDataSets]);
+            float divider = CGRectGetWidth(rect) / (numberOfPoints * numberOfSets);
             CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:i forSetNumber:j] floatValue];
             
-            CGFloat y = (maxGraphHeight - maxGraphHeight * (dataPoint / maxPoint));
+            CGFloat barWidth = self.boundingRect.size.width / numberOfPoints / numberOfSets - (self.barPadding / numberOfSets);
+            CGFloat barHeight = maxGraphHeight * (dataPoint / maxPoint);
+            CGFloat barXOrigin = rect.origin.x + (i * divider * numberOfSets) + j * divider;
+            CGFloat barYOrigin = rect.origin.y + (maxGraphHeight - barHeight);
             
-            CGRect barRect = CGRectMake(rect.origin.x + (i * divider * [self.dataSource numberOfDataSets]) + j * divider, y + rect.origin.y, self.boundingRect.size.width / [self.dataSource numberOfDataPointsForSet:j] / [self.dataSource numberOfDataSets], maxGraphHeight * (dataPoint / maxPoint));
+            CGRect barRect = CGRectMake(barXOrigin, barYOrigin, barWidth, barHeight);
             [self drawBar:barRect context:ctx withSet:j];
             
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -145,7 +163,10 @@
     CGGradientRef gradient = CGGradientCreateWithColors(colorspace, (__bridge CFArrayRef) colorsRefs, locations);
     
     CGPoint startPoint = rect.origin;
-    CGPoint endPoint = CGPointMake(rect.origin.x + rect.size.width, rect.origin.y);
+    
+    
+    CGPoint endPoint = (self.barGradientColorDirection == JSBarGradientDirectionHorizontal) ?
+    CGPointMake(rect.origin.x + rect.size.width, rect.origin.y) : CGPointMake(rect.origin.x + rect.size.width, rect.origin.y + rect.size.height);
     
     // Create and apply the clipping path
     CGContextBeginPath(ctx);

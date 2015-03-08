@@ -96,7 +96,11 @@
 - (void)drawHorizontalAxis:(CGRect)rect context:(CGContextRef)ctx
 {
     if (!self.showHorizontalAxis) return;
-        
+    
+    if (![self.dataSource respondsToSelector:@selector(numberOfHorizontalAxes)]) {
+        NSAssert(NO, @"You need to pass in the number of axes you want into the horizontal axes datasource");
+    }
+    
     CGContextSetLineWidth(ctx, self.axisLineWidth);
     
     CGFloat max = [self getMaxValueFromDataPoints];
@@ -177,7 +181,7 @@
     CGContextStrokeRect(ctx, self.boundingRect);
 }
 
-- (void)generateInnerGraphBoundingRect
+- (CGRect)generateInnerGraphBoundingRect
 {
     CGFloat top = (self.overallGraphPadding != 0.0f) ? self.overallGraphPadding : self.topGraphPadding;
     CGFloat bottom = self.boundingRect.size.height - ((self.overallGraphPadding != 0.0f) ? self.overallGraphPadding * 2 : self.bottomGraphPadding * 2);
@@ -192,8 +196,7 @@
     rect.size.width = right;
     rect.size.height = bottom;
     
-    
-    self.innerGraphBoundingRect = rect;
+    return rect;
 }
 
 + (void)drawWithBasePoint:(CGPoint)basePoint andAngle:(CGFloat)angle andFont:(UIFont *)font andColor:(UIColor *)color theText:(NSString *)theText
@@ -233,7 +236,7 @@
         for (int j = 0; j < [self.dataSource numberOfDataPointsForSet:i]; j++) {
             if ([max floatValue] == NSNotFound) {
                 max = [self.dataSource graphViewDataPointsAtIndex:j forSetNumber:i];
-            } else if(max < [self.dataSource graphViewDataPointsAtIndex:j forSetNumber:i]) {
+            } else if([max floatValue] < [[self.dataSource graphViewDataPointsAtIndex:j forSetNumber:i] floatValue]) {
                 max = [self.dataSource graphViewDataPointsAtIndex:j forSetNumber:i];
             }
         }

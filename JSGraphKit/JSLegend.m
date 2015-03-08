@@ -35,6 +35,9 @@
     
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
+    if (([self.legendStrings count] == 0) || ([self.colors count] == 0)) {
+        NSAssert(NO, @"You need to specify your colors and strings for the legend");
+    }
     
     for (int i = 0; i < [self.legendStrings count]; i++) {
         
