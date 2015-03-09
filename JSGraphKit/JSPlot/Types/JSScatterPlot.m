@@ -113,6 +113,9 @@
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
     self.layer.sublayers = nil;
+    [self drawGradientUnderDataWithRect:[self generateInnerGraphBoundingRect] context:ctx];
+    [self drawConnectingLinesWithRect:[self generateInnerGraphBoundingRect] context:ctx];
+
     [self drawDataPointsWithRect:[self generateInnerGraphBoundingRect] context:ctx];
     [self drawDataPointLabelsWithRect:[self generateInnerGraphBoundingRect] context:ctx];
     [self addButtonsOnDataPointsWithRect:[self generateInnerGraphBoundingRect]];
@@ -191,8 +194,6 @@
 {
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     if (flag) {
-        [self drawGradientUnderDataWithRect:[self generateInnerGraphBoundingRect] context:ctx];
-        [self drawConnectingLinesWithRect:[self generateInnerGraphBoundingRect] context:ctx];
     }
 }
 
@@ -436,10 +437,7 @@
     }
         
     CGFloat maxPoint = [self getMaxValueFromDataPoints];
-    
     int maxGraphHeight = rect.size.height;
-
-
     CGPoint startPoint, endPoint;
     startPoint.x = 0;
     startPoint.y = rect.origin.y + rect.size.height - self.boxLineWidth;
@@ -470,7 +468,7 @@
         }
         
         CGGradientRef gradient = CGGradientCreateWithColors(colorspace, (__bridge CFArrayRef) colorsRefs, locations);
-        
+        CGColorSpaceRelease(colorspace);
         
         CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:0 forSetNumber:j] floatValue];
         float y = (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
@@ -492,7 +490,6 @@
         CGContextClip(ctx);
         CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
         CGContextRestoreGState(ctx);
-        CGColorSpaceRelease(colorspace);
         CGGradientRelease(gradient);
     }
 }

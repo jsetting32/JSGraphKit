@@ -91,9 +91,7 @@
 }
 
 - (void)drawBarPlotWithRect:(CGRect)rect context:(CGContextRef)ctx
-{
-
-    
+{    
     int maxGraphHeight = rect.size.height;
     CGFloat maxPoint = [self getMaxValueFromDataPoints];
     
