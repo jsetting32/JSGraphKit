@@ -199,24 +199,6 @@
     return rect;
 }
 
-+ (void)drawWithBasePoint:(CGPoint)basePoint andAngle:(CGFloat)angle andFont:(UIFont *)font andColor:(UIColor *)color theText:(NSString *)theText
-{
-    CGSize textSize = [theText sizeWithAttributes:@{NSFontAttributeName:font}];
-    
-    CGContextRef context    = UIGraphicsGetCurrentContext();
-    CGAffineTransform t     = CGAffineTransformMakeTranslation(basePoint.x, basePoint.y);
-    CGAffineTransform r     = CGAffineTransformMakeRotation(angle);
-    
-    CGContextConcatCTM(context, t);
-    CGContextConcatCTM(context, r);
-    
-    [theText drawAtPoint:CGPointMake(-textSize.width / 2, -textSize.height / 2)
-          withAttributes:@{NSFontAttributeName:font, NSForegroundColorAttributeName:color}];
-    
-    CGContextConcatCTM(context, CGAffineTransformInvert(r));
-    CGContextConcatCTM(context, CGAffineTransformInvert(t));
-}
-
 - (void)iteratorForDataPointsWithRect:(CGRect)rect
                                 block:(void (^)(int maxGraphHeight, CGFloat maxPoint, float divider, CGFloat dataPoint, int i))completionBlock {
     CGFloat maxPoint = [self getMaxValueFromDataPoints];

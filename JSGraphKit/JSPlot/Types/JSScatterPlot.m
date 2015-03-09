@@ -113,8 +113,6 @@
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
     self.layer.sublayers = nil;
-    [self drawGradientUnderDataWithRect:[self generateInnerGraphBoundingRect] context:ctx];
-    [self drawConnectingLinesWithRect:[self generateInnerGraphBoundingRect] context:ctx];
     [self drawDataPointsWithRect:[self generateInnerGraphBoundingRect] context:ctx];
     [self drawDataPointLabelsWithRect:[self generateInnerGraphBoundingRect] context:ctx];
     [self addButtonsOnDataPointsWithRect:[self generateInnerGraphBoundingRect]];
@@ -126,6 +124,39 @@
     //[self drawBarPlotWithRect:theRect context:ctx];
 }
 
+- (void)createPathWithRect:(CGRect)theRect withIndex:(int)j
+{
+    CAShapeLayer *circle = [CAShapeLayer layer];
+    circle.path = [[UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, self.pointRadius, self.pointRadius) cornerRadius:(self.pointRadius / 2.0f)] CGPath];
+    circle.position = CGPointMake(theRect.origin.x, theRect.origin.y);
+    
+    if ([self.dataSource respondsToSelector:@selector(colorForLineGraphDataPointSet:)]) {
+        circle.fillColor = [[[self.dataSource colorForLineGraphDataPointSet:j] lastObject] CGColor];
+        circle.strokeColor = [[[self.dataSource colorForLineGraphDataPointSet:j] firstObject] CGColor];
+    } else {
+        circle.fillColor = [self.innerPointColor CGColor];
+        circle.strokeColor = [self.outerPointColor CGColor];
+    }
+    
+    circle.lineWidth = self.lineWidth;
+    
+    // Add to parent layer
+    [self.layer addSublayer:circle];
+    
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+    animation.fromValue = [NSNumber numberWithFloat:0.0f];
+    animation.toValue   = [NSNumber numberWithFloat:1.0f];
+    animation.duration = self.lineAnimationDuration;
+    [animation setDelegate:self];
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+    
+    // Important: change the actual layer property before installing the animation.
+    [circle setValue:animation.toValue forKeyPath:animation.keyPath];
+    
+    // Now install the explicit animation, overriding the implicit animation.
+    [circle addAnimation:animation forKey:animation.keyPath];
+
+}
 
 #pragma mark - Draw points
 - (void)drawDataPointsWithRect:(CGRect)rect context:(CGContextRef)ctx
@@ -134,66 +165,35 @@
     
     CGFloat maxPoint = [self getMaxValueFromDataPoints];
     
-    
     for (int j = 0; j < [self.dataSource numberOfDataSets]; j++) {
-        
-        if ([self.dataSource respondsToSelector:@selector(colorForLineGraphDataPointSet:)]) {
-            CGContextSetFillColorWithColor(ctx, [[[self.dataSource colorForLineGraphDataPointSet:j] firstObject] CGColor]);
-        } else {
-            CGContextSetFillColorWithColor(ctx, [self.outerPointColor CGColor]);
-        }
-        CGContextSaveGState(ctx);
-        
-        
+
         if ([self.dataSource numberOfDataPointsForSet:j] == 1) {
             float divider = CGRectGetWidth(rect) / 2;
             CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:0 forSetNumber:j] floatValue];
             float y = (rect.size.height - rect.size.height * (dataPoint / maxPoint));
-            CGRect theRect = CGRectMake(rect.origin.x + (divider - self.pointRadius), rect.origin.y + (y - self.pointRadius), 2 * self.pointRadius, 2 * self.pointRadius);
-            CGContextAddEllipseInRect(ctx, theRect);
+            CGRect theRect = CGRectMake(rect.origin.x + (divider - self.pointRadius / 2), rect.origin.y + (y - self.pointRadius / 2), 2 * self.pointRadius, 2 * self.pointRadius);
+            [self createPathWithRect:theRect withIndex:j];
+        
         } else {
             float divider = CGRectGetWidth(rect) / (CGFloat)([self.dataSource numberOfDataPointsForSet:j] - 1);
             for (int i = 0; i < [self.dataSource numberOfDataPointsForSet:j]; i++) {
                 CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:i forSetNumber:j] floatValue];
                 float y = (rect.size.height - rect.size.height * (dataPoint / maxPoint));
-                CGRect theRect = CGRectMake(rect.origin.x + (i * divider - self.pointRadius), rect.origin.y + (y - self.pointRadius), 2 * self.pointRadius, 2 * self.pointRadius);
-                CGContextAddEllipseInRect(ctx, theRect);
+                CGRect theRect = CGRectMake(rect.origin.x + (i * divider - self.pointRadius / 2), rect.origin.y + (y - self.pointRadius / 2), 2 * self.pointRadius, 2 * self.pointRadius);
+                [self createPathWithRect:theRect withIndex:j];
+
             }
         }
-        
-        CGContextRestoreGState(ctx);
-        CGContextDrawPath(ctx, kCGPathFill);
     }
-    
-    
-    for (int j = 0; j < [self.dataSource numberOfDataSets]; j++) {
-        
-        if ([self.dataSource respondsToSelector:@selector(colorForLineGraphDataPointSet:)]) {
-            CGContextSetFillColorWithColor(ctx, [[[self.dataSource colorForLineGraphDataPointSet:j] lastObject] CGColor]);
-        } else {
-            CGContextSetFillColorWithColor(ctx, [self.innerPointColor CGColor]);
-        }
-        CGContextSaveGState(ctx);
-        
-        if ([self.dataSource numberOfDataPointsForSet:j] == 1) {
-            float divider = CGRectGetWidth(rect) / 2;
-            CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:0 forSetNumber:j] floatValue];
-            float y = (rect.size.height - rect.size.height * (dataPoint / maxPoint));
-            CGRect theRect = CGRectMake(rect.origin.x + (divider - (self.pointRadius / 2.0f)), rect.origin.y + (y - (self.pointRadius / 2.0f)), self.pointRadius, self.pointRadius);
-            CGContextAddEllipseInRect(ctx, theRect);
-        } else {
-            float divider = CGRectGetWidth(rect) / (CGFloat)([self.dataSource numberOfDataPointsForSet:j] - 1);
-            for (int i = 0; i < [self.dataSource numberOfDataPointsForSet:j]; i++) {
-                CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:i forSetNumber:j] floatValue];
-                float y = (rect.size.height - rect.size.height * (dataPoint / maxPoint));
-                CGRect theRect = CGRectMake(rect.origin.x + (i * divider - (self.pointRadius / 2.0f)), rect.origin.y + (y - (self.pointRadius / 2.0f)), self.pointRadius, self.pointRadius);
-                CGContextAddEllipseInRect(ctx, theRect);
-            }
-        }
-        CGContextRestoreGState(ctx);
-        CGContextDrawPath(ctx, kCGPathFill);
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    if (flag) {
+        [self drawGradientUnderDataWithRect:[self generateInnerGraphBoundingRect] context:ctx];
+        [self drawConnectingLinesWithRect:[self generateInnerGraphBoundingRect] context:ctx];
     }
-    
 }
 
 #pragma mark - Draw point labels
@@ -229,9 +229,6 @@
     
     CGFloat maxPoint = [self getMaxValueFromDataPoints];
     int maxGraphHeight = rect.size.height;
-
-    CGContextSetLineWidth(ctx, self.lineWidth);
-    
     
     if (self.showLineCurvature) {
         

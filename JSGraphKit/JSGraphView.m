@@ -19,6 +19,18 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (!(self = [super initWithFrame:frame])) return nil;
+    
+    self.verticalAxesTitle = nil;
+    self.horizontalAxesTitle = nil;
+    self.axesTitleFont = [UIFont fontWithName:@"AppleSDGothicNeo-Light" size:8.0f];
+    self.axesTextColor = [UIColor blackColor];
+    self.horizontalAxesOffset = CGPointMake(0, 0);
+    self.horizontalAxesAngle = 90.0f;
+    self.verticalAxesOffset = CGPointMake(0, 0);
+    self.verticalAxesAngle = 0.0f;
+    
+    self.showLegendView = NO;
+    
     self.overallPadding = 0.0f;
     self.topPadding = 0.0f;
     self.bottomPadding = 0.0f;
@@ -71,6 +83,24 @@
     }
 }
 
+- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+    
+    [JSGraphView drawWithBasePoint:CGPointMake(self.frame.origin.x + self.horizontalAxesOffset.x,
+                                               self.frame.size.height / 2.0f + self.horizontalAxesOffset.y)
+                          andAngle:self.horizontalAxesAngle
+                           andFont:self.axesTitleFont
+                          andColor:self.axesTextColor
+                           theText:self.horizontalAxesTitle];
+    [JSGraphView drawWithBasePoint:CGPointMake(self.frame.size.width / 2.0f + self.verticalAxesOffset.x,
+                                               self.frame.size.height + self.verticalAxesOffset.y)
+                          andAngle:self.verticalAxesAngle
+                           andFont:self.axesTitleFont
+                          andColor:self.axesTextColor
+                           theText:self.verticalAxesTitle];
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -103,6 +133,24 @@
         [self.legend setFrame:CGRectMake(self.legendOffset.x, self.legendOffset.y, self.legendDimension.width, self.legendDimension.height)];
         [self addSubview:self.legend];
     }
+}
+
++ (void)drawWithBasePoint:(CGPoint)basePoint andAngle:(CGFloat)angle andFont:(UIFont *)font andColor:(UIColor *)color theText:(NSString *)theText
+{
+    CGSize textSize = [theText sizeWithAttributes:@{NSFontAttributeName:font}];
+    
+    CGContextRef context    = UIGraphicsGetCurrentContext();
+    CGAffineTransform t     = CGAffineTransformMakeTranslation(basePoint.x, basePoint.y);
+    CGAffineTransform r     = CGAffineTransformMakeRotation(-angle * M_PI/180.0);
+    
+    CGContextConcatCTM(context, t);
+    CGContextConcatCTM(context, r);
+    
+    [theText drawAtPoint:CGPointMake(-textSize.width / 2, -textSize.height / 2)
+          withAttributes:@{NSFontAttributeName:font, NSForegroundColorAttributeName:color}];
+    
+    CGContextConcatCTM(context, CGAffineTransformInvert(r));
+    CGContextConcatCTM(context, CGAffineTransformInvert(t));
 }
 
 @end

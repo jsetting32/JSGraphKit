@@ -12,7 +12,7 @@
 - (instancetype)initWithLegendStrings:(NSArray *)legendStrings withColors:(NSArray *)colors;
 
 ///--------------------------------------
-/// @name View Methods
+/// @name View Attributes
 ///--------------------------------------
 
 /*!

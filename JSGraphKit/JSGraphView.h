@@ -107,11 +107,51 @@ typedef enum {
 - (void)setTheme:(JSGraphTheme)theme;
 
 ///--------------------------------------
-/// @name View Methods
+/// @name View Attributes
 ///--------------------------------------
 
 /*!
- @abstract Shows the legend of the data input (defaults to YES)
+ @abstract Sets the title of the vertical axes (defaults to nil)
+ */
+@property (nonatomic, strong) NSString *verticalAxesTitle;
+
+/*!
+ @abstract Sets the title of the horizontal axes (defaults to nil)
+ */
+@property (nonatomic, strong) NSString *horizontalAxesTitle;
+
+/*!
+ @abstract Sets the text color of the axes (defaults to black)
+ */
+@property (nonatomic, retain) UIColor *axesTextColor;
+
+/*!
+ @abstract Sets the axes title label font (defaults to AppleSDGothicNeo-Light - 8.0f)
+ */
+@property (nonatomic, assign) UIFont *axesTitleFont;
+
+/*!
+ @abstract Sets the horizontal axes padding/offset (defaults to (0,0))
+ */
+@property (nonatomic, assign) CGPoint horizontalAxesOffset;
+
+/*!
+ @abstract Sets the horizontal axes angle transform (defaults to 90.0f)
+ */
+@property (nonatomic, assign) CGFloat horizontalAxesAngle;
+
+/*!
+ @abstract Sets the vertical axes padding/offset (defaults to (0,0))
+ */
+@property (nonatomic, assign) CGPoint verticalAxesOffset;
+
+/*!
+ @abstract Sets the vertical axes angle transform (defaults to 0.0f)
+ */
+@property (nonatomic, assign) CGFloat verticalAxesAngle;
+
+/*!
+ @abstract Shows the legend of the data input (defaults to NO)
  */
 @property (nonatomic, assign) BOOL showLegendView;
 
@@ -141,7 +181,7 @@ typedef enum {
 @property (nonatomic, assign) CGFloat rightPadding;
 
 ///--------------------------------------
-/// @name Legend View Methods
+/// @name Legend View Properties
 ///--------------------------------------
 
 /*!
@@ -203,5 +243,7 @@ typedef enum {
  @abstract Sets the legend border width (defaults to 1.0f)
  */
 @property (nonatomic, assign) CGFloat legendBorderWidth;
+
++ (void)drawWithBasePoint:(CGPoint)basePoint andAngle:(CGFloat)angle andFont:(UIFont *)font andColor:(UIColor *)color theText:(NSString *)theText;
 
 @end

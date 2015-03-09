@@ -12,7 +12,7 @@
 @interface JSPlot : JSGraphView
 
 ///--------------------------------------
-/// @name View Methods
+/// @name View Attributes
 ///--------------------------------------
 
 /*!
@@ -130,7 +130,6 @@
 - (void)iteratorForDataPointsWithRect:(CGRect)rect
                                 block:(void (^)(int maxGraphHeight, CGFloat maxPoint, float divider, CGFloat dataPoint, int i))completionBlock;
 
-+ (void)drawWithBasePoint:(CGPoint)basePoint andAngle:(CGFloat)angle andFont:(UIFont *)font andColor:(UIColor *)color theText:(NSString *)theText;
 
 + (CAShapeLayer *)layerWithPath:(CGPathRef)path withFillColor:(UIColor *)fill withStrokeColor:(UIColor *)stroke withLineWidth:(CGFloat)width;
 + (void)animateWithLayer:(CAShapeLayer *)layer animationDuration:(CFTimeInterval)duration;

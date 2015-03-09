@@ -25,6 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //self.dataset1 = @[@100];
     self.dataset1 = @[@100, @200, @400, @500, @100, @60, @40, @200, @50, @20, @60, @100, @200];
     self.dataset2 = @[@21, @30, @440, @550, @110, @60, @400, @20, @450, @120, @20, @120, @20];
     self.dataset3 = @[@400, @500, @10, @210, @520, @400, @300, @120, @230, @500, @210, @240, @50];
@@ -299,9 +300,16 @@
         [_scatterPlot setDataSource:self];
         [_scatterPlot setDelegate:self];
         [_scatterPlot setTopPadding:40.0f];
-        [_scatterPlot setLeftPadding:40.0f];
+        [_scatterPlot setLeftPadding:55.0f];
         [_scatterPlot setRightPadding:60.0f];
         [_scatterPlot setBottomPadding:40.0f];
+        
+        [_scatterPlot setAxesTitleFont:[UIFont fontWithName:@"AppleSDGothicNeo-Bold" size:12.0f]];
+        [_scatterPlot setHorizontalAxesOffset:CGPointMake(5, 0)];
+        [_scatterPlot setVerticalAxesOffset:CGPointMake(-10, -20)];
+        
+        [_scatterPlot setHorizontalAxesTitle:@"Count"];
+        [_scatterPlot setVerticalAxesTitle:@"Date"];
         
         [_scatterPlot setLeftGraphPadding:10.0f];
         [_scatterPlot setRightGraphPadding:10.0f];
