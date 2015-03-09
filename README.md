@@ -59,7 +59,7 @@ Heres the result:
 
 ![Alt text](Showcase1.png "Optional Title")
 
-- You can now add a horizontal and vertical axes title.
+<h3>You can now add a horizontal and vertical axes title</h3>
 
 ```Objective-C
 [_scatterPlot setHorizontalAxesTitle:@"Count"];
