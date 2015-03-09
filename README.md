@@ -59,6 +59,23 @@ Heres the result:
 
 ![Alt text](Showcase1.png "Optional Title")
 
+- You can now add a horizontal and vertical axes title.
+
+```Objective-C
+[_scatterPlot setHorizontalAxesTitle:@"Count"];
+[_scatterPlot setVerticalAxesTitle:@"Count"];
+```
+You can also change the font, color, h/v angle, and h/v offset.
+
+```Objective-C
+[_scatterPlot setAxesTitleFont:[UIFont fontWithName:@"AppleSDGothicNeo-Bold" size:12.0f]];
+[_scatterPlot setHorizontalAxesOffset:CGPointMake(5, 0)];
+[_scatterPlot setVerticalAxesOffset:CGPointMake(-10, -20)];
+[_scatterPlot setHorizontalAxesTitle:@"Count"];
+[_scatterPlot setVerticalAxesTitle:@"Date"];
+```
+
+
 - Make the graphs work with time formatted data
 
 - More to come!
