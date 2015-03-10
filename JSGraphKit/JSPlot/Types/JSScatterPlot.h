@@ -55,6 +55,11 @@
  */
 @property (nonatomic, retain) UIColor * innerPointColor;
 
+/*!
+ @abstract Sets the data point graph animation duration (defaults to 0.0f - no animation)
+ This will animate all data points within the graph simultaneously
+ */
+@property (nonatomic, assign) CGFloat dataPointAnimationDuration;
 
 ///--------------------------------------
 /// @name Line Plot Attributes

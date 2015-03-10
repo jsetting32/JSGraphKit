@@ -133,4 +133,7 @@
 
 + (CAShapeLayer *)layerWithPath:(CGPathRef)path withFillColor:(UIColor *)fill withStrokeColor:(UIColor *)stroke withLineWidth:(CGFloat)width;
 + (void)animateWithLayer:(CAShapeLayer *)layer animationDuration:(CFTimeInterval)duration;
+
+- (void)didTapDataPoint:(UIButton *)button;
+- (void)createButtonWithFrame:(CGRect)frame dataPointIndex:(int)dataPointIndex setIndex:(int)setIndex;
 @end

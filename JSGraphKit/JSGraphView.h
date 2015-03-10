@@ -77,14 +77,10 @@ typedef enum {
 - (NSInteger)numberOfDataSets;
 
 /*!
- * @abstract The number of data points for a specified data set
- */
-- (NSInteger)numberOfDataPointsForSet:(NSInteger)setNumber;
-/*!
  * @abstract The data points of the graph
  * Must pass in NSNumber object to be inputted into the graph
  */
-- (NSNumber *)graphViewDataPointsAtIndex:(NSInteger)index forSetNumber:(NSInteger)setNumber;
+- (NSArray *)graphViewDataPointsForSetNumber:(NSInteger)setNumber;
 @end
 
 

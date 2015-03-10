@@ -126,23 +126,24 @@
     }
 }
 
-- (NSNumber *)graphViewDataPointsAtIndex:(NSInteger)index forSetNumber:(NSInteger)setNumber
+- (NSArray *)graphViewDataPointsForSetNumber:(NSInteger)setNumber
 {
     switch (setNumber) {
         case 0:
-            return [self.dataset1 objectAtIndex:index];
+            return self.dataset1;
             break;
         case 1:
-            return [self.dataset2 objectAtIndex:index];
+            return self.dataset2;
             break;
         case 2:
-            return [self.dataset3 objectAtIndex:index];
+            return self.dataset3;
             break;
         default:
             break;
     }
     return nil;
 }
+
 
 - (UIColor *)colorForPlotSet:(NSInteger)setNumber
 {
@@ -162,24 +163,6 @@
     return nil;
 }
 
-- (NSInteger)numberOfDataPointsForSet:(NSInteger)setNumber
-{
-    switch (setNumber) {
-        case 0:
-            return [self.dataset1 count];
-            break;
-        case 1:
-            return [self.dataset2 count];
-            break;
-        case 2:
-            return [self.dataset3 count];
-            break;
-        default:
-            break;
-    }
-    return 0;
-}
-
 - (NSArray *)gradientColorsForPlotSet:(NSInteger)setNumber
 {
     switch (setNumber) {
@@ -187,10 +170,10 @@
             return @[[UIColor redColor], [UIColor blackColor]];
             break;
         case 1:
-            return @[[UIColor blueColor], [UIColor brownColor]];
+            return @[[UIColor blueColor], [UIColor blackColor]];
             break;
         case 2:
-            return @[[UIColor greenColor], [UIColor yellowColor]];
+            return @[[UIColor greenColor], [UIColor blackColor]];
             break;
         default:
             break;
@@ -234,14 +217,15 @@
 }
 */
 
+/*
 - (CFTimeInterval)animateDurationForDataPointsInSet:(NSInteger)setNumber
 {
     switch (setNumber) {
         case 0:
-            return 2;
+            return 3;
             break;
         case 1:
-            return 3;
+            return 2;
             break;
         case 2:
             return 1;
@@ -251,6 +235,7 @@
     }
     return 0;
 }
+*/
 
 - (NSInteger)numberOfHorizontalAxes
 {
@@ -311,19 +296,24 @@
         [_scatterPlot setHorizontalAxesTitle:@"Count"];
         [_scatterPlot setVerticalAxesTitle:@"Date"];
         
+        [_scatterPlot setTopGraphPadding:10.0f];
         [_scatterPlot setLeftGraphPadding:10.0f];
         [_scatterPlot setRightGraphPadding:10.0f];
         
         [_scatterPlot setPointRadius:5.0f];
         [_scatterPlot setLineWidth:2.0f];
+        
         [_scatterPlot setShowHorizontalAxis:YES];
-        [_scatterPlot setShowGradientUnderLinePlot:YES];
+        [_scatterPlot setShowGradientUnderLinePlot:NO];
+        
         [_scatterPlot setBoxLineWidth:1.0f];
         [_scatterPlot setShowPointLabels:NO];
         [_scatterPlot setPointLabelAngle:0.0f];
         [_scatterPlot setPointLabelOffset:CGPointMake(10, -10)];
         [_scatterPlot setShowLineCurvature:YES];
-        [_scatterPlot setLineAnimationDuration:0.0f];
+        
+        [_scatterPlot setLineAnimationDuration:5.0f];
+        [_scatterPlot setDataPointAnimationDuration:5.0f];
         [_scatterPlot setGraphCornerRadius:5.0f];
         [_scatterPlot setShowLegendView:YES];
         [_scatterPlot setLegendOffset:CGPointMake(_scatterPlot.frame.size.width - 55, _scatterPlot.frame.size.height / 2.0f - 55/2.0f)];

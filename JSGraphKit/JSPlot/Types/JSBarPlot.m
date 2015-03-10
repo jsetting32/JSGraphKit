@@ -82,8 +82,8 @@
         NSAssert(NO, @"It is required to implement the data source 'numberOfDataSets' selector");
     }
     
-    if (![self.dataSource respondsToSelector:@selector(numberOfDataPointsForSet:)]) {
-        NSAssert(NO, @"It is required to implement the data source 'numberOfDataPointsForSet:' selector");
+    if (![self.dataSource respondsToSelector:@selector(graphViewDataPointsForSetNumber:)]) {
+        NSAssert(NO, @"It is required to implement the data source 'graphViewDataPointsForSetNumber:' selector");
     }
     
     CGContextRef ctx = UIGraphicsGetCurrentContext();
@@ -99,12 +99,12 @@
     
     for (int j = 0; j < numberOfSets; j++) {
         
-        NSInteger numberOfPoints = [self.dataSource numberOfDataPointsForSet:j];
+        NSInteger numberOfPoints = [[self.dataSource graphViewDataPointsForSetNumber:j] count];
         
         for (int i = 0; i < numberOfPoints; i++)
         {
             float divider = CGRectGetWidth(rect) / (numberOfPoints * numberOfSets);
-            CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:i forSetNumber:j] floatValue];
+            CGFloat dataPoint = [[[self.dataSource graphViewDataPointsForSetNumber:j] objectAtIndex:i] floatValue];
             
             CGFloat barWidth = self.boundingRect.size.width / numberOfPoints / numberOfSets - (self.barPadding / numberOfSets);
             CGFloat barHeight = maxGraphHeight * (dataPoint / maxPoint);
@@ -113,12 +113,7 @@
             
             CGRect barRect = CGRectMake(barXOrigin, barYOrigin, barWidth, barHeight);
             [self drawBar:barRect context:ctx withSet:j];
-            
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-            button.tag = ((i*10000)+30000)+(j*10);
-            [button setFrame:barRect];
-            [button addTarget:self action:@selector(didTapBarPlot:) forControlEvents:UIControlEventTouchUpInside];
-            [self addSubview:button];
+            [self createButtonWithFrame:barRect dataPointIndex:i setIndex:j];
         }
         
     }
@@ -188,17 +183,6 @@
     // Release the resources
     CGColorSpaceRelease(colorspace);
     CGGradientRelease(gradient);
-}
-
-#pragma mark - Data Point Pressed Delegate
-- (void)didTapBarPlot:(UIButton *)button
-{
-    NSInteger intTag2 = (NSInteger)((button.tag-30000)%10000)/10;
-    NSInteger intTag1 = (NSInteger)((button.tag-(intTag2*10))-30000)/10000;
-
-    if (self.delegate && [self.delegate respondsToSelector:@selector(JSGraphView:didTapDataPointAtIndex:inSet:)]) {
-        [self.delegate JSGraphView:self didTapDataPointAtIndex:intTag1 inSet:intTag2];
-    }
 }
 
 @end

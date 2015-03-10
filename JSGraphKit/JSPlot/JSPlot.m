@@ -41,6 +41,8 @@
     self.leftGraphPadding = 0.0f;
     self.rightGraphPadding = 0.0f;
     
+    [self setClipsToBounds:YES];
+    
     return self;
 }
 
@@ -199,27 +201,15 @@
     return rect;
 }
 
-- (void)iteratorForDataPointsWithRect:(CGRect)rect
-                                block:(void (^)(int maxGraphHeight, CGFloat maxPoint, float divider, CGFloat dataPoint, int i))completionBlock {
-    CGFloat maxPoint = [self getMaxValueFromDataPoints];
-    for (int j = 0; j < [self.dataSource numberOfDataSets]; j++) {
-        for (int i = 0; i < [self.dataSource numberOfDataPointsForSet:j]; i++) {
-            float divider = CGRectGetWidth(rect) / [self.dataSource numberOfDataPointsForSet:i];
-            CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:i forSetNumber:j] floatValue];
-            completionBlock(rect.size.height, maxPoint, divider, dataPoint, i);
-        }
-    }
-}
-
 - (CGFloat)getMaxValueFromDataPoints
 {
     NSNumber *max;
     for (int i = 0; i < [self.dataSource numberOfDataSets]; i++) {
-        for (int j = 0; j < [self.dataSource numberOfDataPointsForSet:i]; j++) {
+        for (int j = 0; j < [[self.dataSource graphViewDataPointsForSetNumber:i] count]; j++) {
             if ([max floatValue] == NSNotFound) {
-                max = [self.dataSource graphViewDataPointsAtIndex:j forSetNumber:i];
-            } else if([max floatValue] < [[self.dataSource graphViewDataPointsAtIndex:j forSetNumber:i] floatValue]) {
-                max = [self.dataSource graphViewDataPointsAtIndex:j forSetNumber:i];
+                max = [[self.dataSource graphViewDataPointsForSetNumber:i] objectAtIndex:j];
+            } else if([max floatValue] < [[[self.dataSource graphViewDataPointsForSetNumber:i] objectAtIndex:j] floatValue]) {
+                max = [[self.dataSource graphViewDataPointsForSetNumber:i] objectAtIndex:j];
             }
         }
     }
@@ -250,5 +240,24 @@
     [layer addAnimation:pathAnimation forKey:@"strokeEnd"];
 }
 
+- (void)createButtonWithFrame:(CGRect)frame dataPointIndex:(int)dataPointIndex setIndex:(int)setIndex
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.tag = ((dataPointIndex*10000)+30000)+(setIndex*10);
+    [button setFrame:frame];
+    [button addTarget:self action:@selector(didTapDataPoint:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:button];
+}
+
+#pragma mark - Data Point Pressed Delegate
+- (void)didTapDataPoint:(UIButton *)button
+{
+    NSInteger intTag2 = (NSInteger)((button.tag-30000)%10000)/10;
+    NSInteger intTag1 = (NSInteger)((button.tag-(intTag2*10))-30000)/10000;
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(JSGraphView:didTapDataPointAtIndex:inSet:)]) {
+        [self.delegate JSGraphView:self didTapDataPointAtIndex:intTag1 inSet:intTag2];
+    }
+}
 
 @end

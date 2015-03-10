@@ -50,6 +50,7 @@
     self.lineWidth = 1.0f;
     self.showLineCurvature = NO;
     self.lineAnimationDuration = 0.0f;
+    self.dataPointAnimationDuration = 0.0f;
 
     [self setTheme:self.graphTheme];
 }
@@ -100,12 +101,12 @@
         NSAssert(NO, @"It is required to implement the data source 'numberOfDataSets' selector");
     }
     
-    if (![self.dataSource respondsToSelector:@selector(numberOfDataPointsForSet:)]) {
-        NSAssert(NO, @"It is required to implement the data source 'numberOfDataPointsForSet:' selector");
+    if (![self.dataSource respondsToSelector:@selector(graphViewDataPointsForSetNumber:)]) {
+        NSAssert(NO, @"It is required to implement the data source 'graphViewDataPointsForSetNumber:' selector");
     }
     
     for (int i = 0; i < [self.dataSource numberOfDataSets]; i++) {
-        if ([self.dataSource numberOfDataPointsForSet:i] == 0) {
+        if ([[self.dataSource graphViewDataPointsForSetNumber:i] count] == 0) {
             return;
         }
     }
@@ -114,12 +115,12 @@
     
     self.layer.sublayers = nil;
     [self drawGradientUnderDataWithRect:[self generateInnerGraphBoundingRect] context:ctx];
-    [self drawConnectingLinesWithRect:[self generateInnerGraphBoundingRect] context:ctx];
-
     [self drawDataPointsWithRect:[self generateInnerGraphBoundingRect] context:ctx];
     [self drawDataPointLabelsWithRect:[self generateInnerGraphBoundingRect] context:ctx];
-    [self addButtonsOnDataPointsWithRect:[self generateInnerGraphBoundingRect]];
-    
+    //[self addButtonsOnDataPointsWithRect:[self generateInnerGraphBoundingRect]];
+    //if (self.lineAnimationDuration <= 0.0f)
+    [self drawConnectingLinesWithRect:[self generateInnerGraphBoundingRect] context:ctx];
+
     //[self drawDateLabelsWithRect:theRect context:ctx];
     //[self drawDataPointLabelsWithRect:theRect withFont:[UIFont fontWithName:@"Helvetica" size:2] withTextColor:[UIColor blackColor] withPointRadius:kCircleRadius  context:ctx];
     
@@ -146,10 +147,11 @@
     // Add to parent layer
     [self.layer addSublayer:circle];
     
+    if (self.dataPointAnimationDuration <= 0.0f) return;
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
     animation.fromValue = [NSNumber numberWithFloat:0.0f];
     animation.toValue   = [NSNumber numberWithFloat:1.0f];
-    animation.duration = self.lineAnimationDuration;
+    animation.duration = self.dataPointAnimationDuration;
     [animation setDelegate:self];
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     
@@ -170,21 +172,23 @@
     
     for (int j = 0; j < [self.dataSource numberOfDataSets]; j++) {
 
-        if ([self.dataSource numberOfDataPointsForSet:j] == 1) {
+        NSInteger numberOfDataPoints = [[self.dataSource graphViewDataPointsForSetNumber:j] count];
+
+        if (numberOfDataPoints == 1) {
             float divider = CGRectGetWidth(rect) / 2;
-            CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:0 forSetNumber:j] floatValue];
+            CGFloat dataPoint = [[[self.dataSource graphViewDataPointsForSetNumber:j] firstObject] floatValue];
             float y = (rect.size.height - rect.size.height * (dataPoint / maxPoint));
             CGRect theRect = CGRectMake(rect.origin.x + (divider - self.pointRadius / 2), rect.origin.y + (y - self.pointRadius / 2), 2 * self.pointRadius, 2 * self.pointRadius);
             [self createPathWithRect:theRect withIndex:j];
-        
+            [self createButtonWithFrame:theRect dataPointIndex:0 setIndex:j];
         } else {
-            float divider = CGRectGetWidth(rect) / (CGFloat)([self.dataSource numberOfDataPointsForSet:j] - 1);
-            for (int i = 0; i < [self.dataSource numberOfDataPointsForSet:j]; i++) {
-                CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:i forSetNumber:j] floatValue];
+            float divider = CGRectGetWidth(rect) / (CGFloat)(numberOfDataPoints - 1);
+            for (int i = 0; i < numberOfDataPoints; i++) {
+                CGFloat dataPoint = [[[self.dataSource graphViewDataPointsForSetNumber:j] objectAtIndex:i] floatValue];
                 float y = (rect.size.height - rect.size.height * (dataPoint / maxPoint));
                 CGRect theRect = CGRectMake(rect.origin.x + (i * divider - self.pointRadius / 2), rect.origin.y + (y - self.pointRadius / 2), 2 * self.pointRadius, 2 * self.pointRadius);
                 [self createPathWithRect:theRect withIndex:j];
-
+                [self createButtonWithFrame:theRect dataPointIndex:i setIndex:j];
             }
         }
     }
@@ -209,9 +213,11 @@
     int maxGraphHeight = rect.size.height;
     
     for (int j = 0; j < [self.dataSource numberOfDataSets]; j++) {
-        float divider = CGRectGetWidth(rect) / (CGFloat)([self.dataSource numberOfDataPointsForSet:j] - 1);
-        for (int i = 0; i < [self.dataSource numberOfDataPointsForSet:j]; i++) {
-            CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:i forSetNumber:j] floatValue];
+        NSInteger numberOfDataPoints = [[self.dataSource graphViewDataPointsForSetNumber:j] count];
+
+        float divider = CGRectGetWidth(rect) / (CGFloat)(numberOfDataPoints - 1);
+        for (int i = 0; i < numberOfDataPoints; i++) {
+            CGFloat dataPoint = [[[self.dataSource graphViewDataPointsForSetNumber:j] objectAtIndex:i] floatValue];
             float y = (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
             NSString *theText = [NSString stringWithFormat:@"%i", (int)dataPoint];
             CGRect textRect = CGRectMake(rect.origin.x + i * divider, rect.origin.y + y, 2, 2);
@@ -234,19 +240,19 @@
     if (self.showLineCurvature) {
         
         for (int j = 0; j < [self.dataSource numberOfDataSets]; j++) {
-            CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:0 forSetNumber:j] floatValue];
+            CGFloat dataPoint = [[[self.dataSource graphViewDataPointsForSetNumber:j] firstObject] floatValue];
             CGFloat x = rect.origin.x;
             CGFloat y = rect.origin.y + (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
             CGPoint p1 = CGPointMake(x, y);
 
-            NSInteger numberOfDataPoints = [self.dataSource numberOfDataPointsForSet:j];
+            NSInteger numberOfDataPoints = [[self.dataSource graphViewDataPointsForSetNumber:j] count];
             
             CGMutablePathRef path = CGPathCreateMutable();
             
             CGPathMoveToPoint(path, NULL, x, y);
             float divider = CGRectGetWidth(rect) / (CGFloat)(numberOfDataPoints - 1);
             if (numberOfDataPoints == 2) {
-                CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:1 forSetNumber:j] floatValue];
+                CGFloat dataPoint = [[[self.dataSource graphViewDataPointsForSetNumber:j] objectAtIndex:1] floatValue];
 
                 CGFloat x = rect.origin.x + divider;
                 CGFloat y = rect.origin.y + (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
@@ -299,7 +305,7 @@
             */
             
             for (int i = 1; i < numberOfDataPoints; i++) {
-                CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:i forSetNumber:j] floatValue];
+                CGFloat dataPoint = [[[self.dataSource graphViewDataPointsForSetNumber:j] objectAtIndex:i] floatValue];
                 CGFloat x = rect.origin.x + i * divider;
                 CGFloat y = rect.origin.y + (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
                 
@@ -337,9 +343,11 @@
         for (int j = 0; j < [self.dataSource numberOfDataSets]; j++) {
             
             CGMutablePathRef path = CGPathCreateMutable();
-            float divider = CGRectGetWidth(rect) / (CGFloat)([self.dataSource numberOfDataPointsForSet:j] - 1);
-            for (int i = 0; i < [self.dataSource numberOfDataPointsForSet:j]; i++) {
-                CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:i forSetNumber:j] floatValue];
+            NSInteger numberOfDataPoints = [[self.dataSource graphViewDataPointsForSetNumber:j] count];
+
+            float divider = CGRectGetWidth(rect) / (CGFloat)(numberOfDataPoints - 1);
+            for (int i = 0; i < numberOfDataPoints; i++) {
+                CGFloat dataPoint = [[[self.dataSource graphViewDataPointsForSetNumber:j] objectAtIndex:i] floatValue];
                 CGFloat x = rect.origin.x + i * divider;
                 CGFloat y = rect.origin.y + (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
                 if (i == 0) {
@@ -388,45 +396,6 @@
     return controlPoint;
 }
 
-#pragma mark - Add UIButtons to points
-- (void)addButtonsOnDataPointsWithRect:(CGRect)rect
-{
-    CGFloat maxPoint = [self getMaxValueFromDataPoints];
-    int maxGraphHeight = rect.size.height;
-    
-    for (int j = 0; j < [self.dataSource numberOfDataSets]; j++) {
-        NSInteger numberOfDataPoints = [self.dataSource numberOfDataPointsForSet:j];
-        if (numberOfDataPoints == 1) {
-            float divider = CGRectGetWidth(rect) / (CGFloat)(numberOfDataPoints + 1);
-            int i = 0;
-            CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:i forSetNumber:j] floatValue];
-            float y = (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
-            CGRect theRect = CGRectMake(rect.origin.x + (divider - self.pointRadius * 2), rect.origin.y + (y - self.pointRadius * 2), 4 * self.pointRadius, 4 * self.pointRadius);
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-            button.tag = ((i*10000)+30000)+(j*10);
-            [button setFrame:theRect];
-            [button addTarget:self action:@selector(didTapDataPoint:) forControlEvents:UIControlEventTouchUpInside];
-            [self addSubview:button];
-            
-        } else {
-            float divider = CGRectGetWidth(rect) / (CGFloat)(numberOfDataPoints - 1);
-            for (int i = 0; i < numberOfDataPoints; i++) {
-                CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:i forSetNumber:j] floatValue];
-                float y = (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
-                CGRect theRect = CGRectMake(rect.origin.x + (i * divider - self.pointRadius * 2), rect.origin.y + (y - self.pointRadius * 2), 4 * self.pointRadius, 4 * self.pointRadius);
-                UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-                button.tag = ((i*10000)+30000)+(j*10);
-                [button setFrame:theRect];
-                [button addTarget:self action:@selector(didTapDataPoint:) forControlEvents:UIControlEventTouchUpInside];
-                [self addSubview:button];
-            }
-
-        }
-        
-    };
-    
-}
-
 #pragma mark - Draw gradient under line plot
 - (void)drawGradientUnderDataWithRect:(CGRect)rect context:(CGContextRef)ctx
 {
@@ -470,39 +439,32 @@
         CGGradientRef gradient = CGGradientCreateWithColors(colorspace, (__bridge CFArrayRef) colorsRefs, locations);
         CGColorSpaceRelease(colorspace);
         
-        CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:0 forSetNumber:j] floatValue];
+        
+        
+        CGFloat dataPoint = [[[self.dataSource graphViewDataPointsForSetNumber:j] objectAtIndex:0] floatValue];
         float y = (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
         CGContextBeginPath(ctx);
         
         CGContextMoveToPoint(ctx, rect.origin.x, startPoint.y);
         CGContextAddLineToPoint(ctx, rect.origin.x, rect.origin.y + y);
-        float divider = CGRectGetWidth(rect) / (CGFloat)([self.dataSource numberOfDataPointsForSet:j] - 1);
+        
+        NSInteger numberOfPoints = [[self.dataSource graphViewDataPointsForSetNumber:j] count];
+        
+        float divider = CGRectGetWidth(rect) / (CGFloat)(numberOfPoints - 1);
 
-        for (int i = 0; i < [self.dataSource numberOfDataPointsForSet:j]; i++) {
-            CGFloat dataPoint = [[self.dataSource graphViewDataPointsAtIndex:i forSetNumber:j] floatValue];
+        for (int i = 0; i < numberOfPoints; i++) {
+            CGFloat dataPoint = [[[self.dataSource graphViewDataPointsForSetNumber:j] objectAtIndex:i] floatValue];
             float y = (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
             CGContextAddLineToPoint(ctx, rect.origin.x + (divider * (i)), rect.origin.y + y);
         }
         
-        CGContextAddLineToPoint(ctx, rect.origin.x + (divider * ([self.dataSource numberOfDataPointsForSet:j] - 1)), startPoint.y);
+        CGContextAddLineToPoint(ctx, rect.origin.x + (divider * (numberOfPoints - 1)), startPoint.y);
         CGContextClosePath(ctx);
         CGContextSaveGState(ctx);
         CGContextClip(ctx);
         CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
         CGContextRestoreGState(ctx);
         CGGradientRelease(gradient);
-    }
-}
-
-
-#pragma mark - Data Point Pressed Delegate
-- (void)didTapDataPoint:(UIButton *)button
-{
-    NSInteger intTag2 = (NSInteger)((button.tag-30000)%10000)/10;
-    NSInteger intTag1 = (NSInteger)((button.tag-(intTag2*10))-30000)/10000;
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(JSGraphView:didTapDataPointAtIndex:inSet:)]) {
-        [self.delegate JSGraphView:self didTapDataPointAtIndex:intTag1 inSet:intTag2];
     }
 }
 
