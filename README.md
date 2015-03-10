@@ -98,17 +98,17 @@ Lets start making the graph! So, just to basically setup the graph, we need data
     [self.view addSubview:self.scatterPlot];
 }
 
-- (NSNumber *)graphViewDataPointsAtIndex:(NSInteger)index forSetNumber:(NSInteger)setNumber
+- (NSArray *)graphViewDataPointsForSetNumber:(NSInteger)setNumber
 {
     switch (setNumber) {
         case 0:
-            return [self.dataset1 objectAtIndex:index];
+            return self.dataset1;
             break;
         case 1:
-            return [self.dataset2 objectAtIndex:index];
+            return self.dataset2;
             break;
         case 2:
-            return [self.dataset3 objectAtIndex:index];
+            return self.dataset3;
             break;
         default:
             break;
@@ -116,23 +116,6 @@ Lets start making the graph! So, just to basically setup the graph, we need data
     return nil;
 }
 
-- (NSInteger)numberOfDataPointsForSet:(NSInteger)setNumber
-{
-    switch (setNumber) {
-        case 0:
-            return [self.dataset1 count];
-            break;
-        case 1:
-            return [self.dataset2 count];
-            break;
-        case 2:
-            return [self.dataset3 count];
-            break;
-        default:
-            break;
-    }
-    return 0;
-}
 - (NSInteger)numberOfDataSets
 {
     return 3;
