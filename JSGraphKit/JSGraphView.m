@@ -7,10 +7,9 @@
 //
 
 #import "JSGraphView.h"
+#import "JSGraphView+Protected.h"
 #import "JSLegend.h"
-
 @interface JSGraphView()
-@property (nonatomic, assign) JSGraphTheme graphTheme;
 @property (nonatomic, strong) JSLegend * legend;
 @end
 
@@ -50,13 +49,13 @@
     self.legendBorderColor = [UIColor blackColor];
     self.legendBorderWidth = 1.0f;
     
-    [self setTheme:self.graphTheme];
+    [self setTheme:self->graphTheme];
     return self;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame withTheme:(JSGraphTheme)theme
 {
-    self.graphTheme = theme;
+    self->graphTheme = theme;
     return [self initWithFrame:frame];
 }
 
@@ -105,11 +104,15 @@
 {
     [super layoutSubviews];
     
+    if (![self.dataSource respondsToSelector:@selector(numberOfDatasets)]) {
+        NSAssert(NO, @"You need specify how many data sets your plotting in 'numberOfDatasets'");
+    }
+    
     if (self.showLegendView) {
         NSMutableArray *colors = [NSMutableArray array];
         NSMutableArray *strings = [NSMutableArray array];
         
-        for (int i = 0; i < [self.dataSource numberOfDataSets]; i++) {
+        for (int i = 0; i < [self.dataSource numberOfDatasets]; i++) {
             NSAssert([self.dataSource colorForPlotSet:i], ([NSString stringWithFormat:@"You havent specified a color for dataset at index %i", i]));
             NSAssert([[self.dataSource graphViewWithLegendDataTypes] objectAtIndex:i], ([NSString stringWithFormat:@"You havent specified a type name for dataset at index %i", i]));
             [colors addObject:[self.dataSource colorForPlotSet:i]];
@@ -133,24 +136,6 @@
         [self.legend setFrame:CGRectMake(self.legendOffset.x, self.legendOffset.y, self.legendDimension.width, self.legendDimension.height)];
         [self addSubview:self.legend];
     }
-}
-
-+ (void)drawWithBasePoint:(CGPoint)basePoint andAngle:(CGFloat)angle andFont:(UIFont *)font andColor:(UIColor *)color theText:(NSString *)theText
-{
-    CGSize textSize = [theText sizeWithAttributes:@{NSFontAttributeName:font}];
-    
-    CGContextRef context    = UIGraphicsGetCurrentContext();
-    CGAffineTransform t     = CGAffineTransformMakeTranslation(basePoint.x, basePoint.y);
-    CGAffineTransform r     = CGAffineTransformMakeRotation(-angle * M_PI/180.0);
-    
-    CGContextConcatCTM(context, t);
-    CGContextConcatCTM(context, r);
-    
-    [theText drawAtPoint:CGPointMake(-textSize.width / 2, -textSize.height / 2)
-          withAttributes:@{NSFontAttributeName:font, NSForegroundColorAttributeName:color}];
-    
-    CGContextConcatCTM(context, CGAffineTransformInvert(r));
-    CGContextConcatCTM(context, CGAffineTransformInvert(t));
 }
 
 @end

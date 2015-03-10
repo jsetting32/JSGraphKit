@@ -9,45 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../JSGraphKit/JSLegend.m"
-            timestampString = "447494070.720766"
+            filePath = "../JSGraphKit/JSPlot/JSPlot.m"
+            timestampString = "447708211.656576"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
-            landmarkName = "-drawRect:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../JSGraphKit/JSPlot/Types/JSScatterPlot.m"
-            timestampString = "447638558.156489"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "271"
-            endingLineNumber = "271"
-            landmarkName = "-drawConnectingLinesWithRect:context:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../JSGraphKit/JSPlot/Types/JSScatterPlot.m"
-            timestampString = "447638558.156489"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "270"
-            endingLineNumber = "270"
-            landmarkName = "-drawConnectingLinesWithRect:context:"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
+            landmarkName = "-drawGraphBoundingBoxWithContext:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,29 +25,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../JSGraphKit/JSGraphView.m"
-            timestampString = "447589986.552268"
+            filePath = "../JSGraphKit/JSPlot/JSPlot.m"
+            timestampString = "447708211.656576"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
-            landmarkName = "+drawWithBasePoint:andAngle:andFont:andColor:theText:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../JSGraphKit/JSPlot/Types/JSScatterPlot.m"
-            timestampString = "447638558.156489"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "236"
-            endingLineNumber = "236"
-            landmarkName = "-drawConnectingLinesWithRect:context:"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
+            landmarkName = "-drawGraphBoundingBoxWithContext:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

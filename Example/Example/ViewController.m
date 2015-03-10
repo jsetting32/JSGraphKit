@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //self.dataset1 = @[@100];
+    //self.dataset1 = @[@400, @400];
     self.dataset1 = @[@400, @420, @450, @500, @440, @460, @440, @400, @450, @420, @460, @400, @400];
     self.dataset2 = @[@341, @330, @340, @350, @310, @360, @300, @320, @350, @320, @320, @320, @320];
     self.dataset3 = @[@240, @200, @210, @240, @220, @200, @200, @220, @230, @210, @210, @240, @250];
@@ -126,9 +126,9 @@
     }
 }
 
-- (NSArray *)graphViewDataPointsForSetNumber:(NSInteger)setNumber
+- (NSArray *)datasetAtIndex:(NSInteger)index
 {
-    switch (setNumber) {
+    switch (index) {
         case 0:
             return self.dataset1;
             break;
@@ -205,7 +205,7 @@
     return @[@"AAPL", @"GOOG", @"YHOO"];
 }
 
-- (NSInteger)numberOfDataSets
+- (NSInteger)numberOfDatasets
 {
     return 3;
 }
@@ -284,6 +284,7 @@
         _scatterPlot = [[JSScatterPlot alloc] initWithFrame:CGRectMake(10, 400, self.view.frame.size.width - 20, 250)];
         [_scatterPlot setDataSource:self];
         [_scatterPlot setDelegate:self];
+        
         [_scatterPlot setTopPadding:40.0f];
         [_scatterPlot setLeftPadding:55.0f];
         [_scatterPlot setRightPadding:60.0f];
@@ -296,7 +297,6 @@
         [_scatterPlot setHorizontalAxesTitle:@"Count"];
         [_scatterPlot setVerticalAxesTitle:@"Date"];
         
-        [_scatterPlot setTopGraphPadding:10.0f];
         [_scatterPlot setLeftGraphPadding:10.0f];
         [_scatterPlot setRightGraphPadding:10.0f];
         
@@ -304,16 +304,18 @@
         [_scatterPlot setLineWidth:2.0f];
         
         [_scatterPlot setShowHorizontalAxis:YES];
-        [_scatterPlot setShowGradientUnderLinePlot:NO];
+        [_scatterPlot setShowGradientUnderLinePlot:YES];
         
         [_scatterPlot setBoxLineWidth:1.0f];
+        [_scatterPlot setBoxLineColor:[UIColor whiteColor]];
+        
         [_scatterPlot setShowPointLabels:NO];
         [_scatterPlot setPointLabelAngle:0.0f];
         [_scatterPlot setPointLabelOffset:CGPointMake(10, -10)];
         [_scatterPlot setShowLineCurvature:YES];
         
         [_scatterPlot setLineAnimationDuration:5.0f];
-        [_scatterPlot setDataPointAnimationDuration:5.0f];
+        [_scatterPlot setDataPointAnimationDuration:2.0f];
         [_scatterPlot setGraphCornerRadius:5.0f];
         [_scatterPlot setShowLegendView:YES];
         [_scatterPlot setLegendOffset:CGPointMake(_scatterPlot.frame.size.width - 55, _scatterPlot.frame.size.height / 2.0f - 55/2.0f)];

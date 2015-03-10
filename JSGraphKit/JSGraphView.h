@@ -74,22 +74,29 @@ typedef enum {
 /*!
  * @abstract The number of data sets
  */
-- (NSInteger)numberOfDataSets;
+- (NSInteger)numberOfDatasets;
 
 /*!
  * @abstract The data points of the graph
  * Must pass in NSNumber object to be inputted into the graph
  */
-- (NSArray *)graphViewDataPointsForSetNumber:(NSInteger)setNumber;
+- (NSArray *)datasetAtIndex:(NSInteger)index;
 @end
 
 
-@interface JSGraphView : UIView
+@interface JSGraphView : UIView {
+
+    //ivars are by default @protected but we will ensure this
+    @protected
+        CGRect boundingRect;
+        CGRect innerGraphBoundingRect;
+        JSGraphTheme graphTheme;
+        BOOL animationInProgress;
+    
+}
 
 @property (nonatomic, weak)     id<JSGraphViewDelegate>     delegate;
 @property (nonatomic, assign)   id<JSGraphViewDataSource>   dataSource;
-
-@property (nonatomic, assign) CGRect boundingRect;
 
 /*!
  * @abstract Initializes the graph view with the passed frame.
@@ -239,7 +246,4 @@ typedef enum {
  @abstract Sets the legend border width (defaults to 1.0f)
  */
 @property (nonatomic, assign) CGFloat legendBorderWidth;
-
-+ (void)drawWithBasePoint:(CGPoint)basePoint andAngle:(CGFloat)angle andFont:(UIFont *)font andColor:(UIColor *)color theText:(NSString *)theText;
-
 @end

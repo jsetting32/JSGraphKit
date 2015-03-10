@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E3B2C321AAE6DB300596C06 /* JSGraphView+Protected.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3B2C311AAE6DB300596C06 /* JSGraphView+Protected.m */; };
 		1EC9A10F1AAB0472004DE64D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC9A10E1AAB0472004DE64D /* main.m */; };
 		1EC9A1121AAB0472004DE64D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC9A1111AAB0472004DE64D /* AppDelegate.m */; };
 		1EC9A1151AAB0472004DE64D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC9A1141AAB0472004DE64D /* ViewController.m */; };
@@ -32,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1E3B2C301AAE6DB200596C06 /* JSGraphView+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JSGraphView+Protected.h"; sourceTree = "<group>"; };
+		1E3B2C311AAE6DB300596C06 /* JSGraphView+Protected.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "JSGraphView+Protected.m"; sourceTree = "<group>"; };
 		1EC9A1091AAB0472004DE64D /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EC9A10D1AAB0472004DE64D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1EC9A10E1AAB0472004DE64D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -140,6 +143,8 @@
 			children = (
 				1EC9A1331AAB050D004DE64D /* JSGraphView.h */,
 				1EC9A1341AAB050D004DE64D /* JSGraphView.m */,
+				1E3B2C301AAE6DB200596C06 /* JSGraphView+Protected.h */,
+				1E3B2C311AAE6DB300596C06 /* JSGraphView+Protected.m */,
 				1EC9A1351AAB050D004DE64D /* JSLegend.h */,
 				1EC9A1361AAB050D004DE64D /* JSLegend.m */,
 				1EC9A1371AAB050D004DE64D /* JSPlot */,
@@ -273,6 +278,7 @@
 				1EC9A1401AAB050D004DE64D /* JSLegend.m in Sources */,
 				1EC9A1121AAB0472004DE64D /* AppDelegate.m in Sources */,
 				1EC9A1411AAB050D004DE64D /* JSPlot.m in Sources */,
+				1E3B2C321AAE6DB300596C06 /* JSGraphView+Protected.m in Sources */,
 				1EC9A1431AAB050D004DE64D /* JSScatterPlot.m in Sources */,
 				1EC9A13F1AAB050D004DE64D /* JSGraphView.m in Sources */,
 				1EC9A1421AAB050D004DE64D /* JSBarPlot.m in Sources */,

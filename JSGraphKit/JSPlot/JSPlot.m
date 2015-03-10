@@ -7,9 +7,7 @@
 //
 
 #import "JSPlot.h"
-
-@interface JSPlot()
-@end
+#import "JSGraphView+Protected.h"
 
 @implementation JSPlot
 
@@ -40,8 +38,6 @@
     self.bottomGraphPadding = 0.0f;
     self.leftGraphPadding = 0.0f;
     self.rightGraphPadding = 0.0f;
-    
-    [self setClipsToBounds:YES];
     
     return self;
 }
@@ -89,10 +85,10 @@
     [super drawRect:rect];
     
     CGContextRef ctx = UIGraphicsGetCurrentContext();
- 
+     
     [self drawGraphBoundingBoxWithContext:ctx];
-    [self drawVerticalAxis:self.boundingRect context:ctx];
-    [self drawHorizontalAxis:self.boundingRect context:ctx];
+    [self drawVerticalAxis:self->boundingRect context:ctx];
+    [self drawHorizontalAxis:self->boundingRect context:ctx];
 }
 
 - (void)drawHorizontalAxis:(CGRect)rect context:(CGContextRef)ctx
@@ -160,13 +156,14 @@
     CGFloat left = (self.overallPadding != 0.0f) ? self.overallPadding : self.leftPadding;
     CGFloat right = (self.overallPadding != 0.0f) ? (CGRectGetWidth(self.bounds) - self.overallPadding * 2) : (CGRectGetWidth(self.bounds) - self.rightPadding * 2);
     
-    self.boundingRect = CGRectMake(left, top, right, bottom);
+    self->boundingRect = CGRectMake(left, top, right, bottom);
     CGContextSetLineWidth(ctx, self.boxLineWidth);
+    CGContextSetStrokeColorWithColor(ctx, [self.boxLineColor CGColor]);
     CGContextSetFillColorWithColor(ctx, [self.boxFillColor CGColor]);
     
     if (self.graphCornerRadius > 0.0f) {
-        CGFloat minx = CGRectGetMinX(self.boundingRect), midx = CGRectGetMidX(self.boundingRect), maxx = CGRectGetMaxX(self.boundingRect);
-        CGFloat miny = CGRectGetMinY(self.boundingRect), midy = CGRectGetMidY(self.boundingRect), maxy = CGRectGetMaxY(self.boundingRect);
+        CGFloat minx = CGRectGetMinX(self->boundingRect), midx = CGRectGetMidX(self->boundingRect), maxx = CGRectGetMaxX(self->boundingRect);
+        CGFloat miny = CGRectGetMinY(self->boundingRect), midy = CGRectGetMidY(self->boundingRect), maxy = CGRectGetMaxY(self->boundingRect);
         
         CGContextMoveToPoint(ctx, minx, midy);
         CGContextAddArcToPoint(ctx, minx, miny, midx, miny, self.graphCornerRadius);
@@ -178,20 +175,19 @@
         return;
     }
     
-    CGContextFillRect(ctx, self.boundingRect);
-    CGContextSetStrokeColorWithColor(ctx, [self.boxLineColor CGColor]);
-    CGContextStrokeRect(ctx, self.boundingRect);
+    CGContextFillRect(ctx, self->boundingRect);
+    CGContextStrokeRect(ctx, self->boundingRect);
 }
 
 - (CGRect)generateInnerGraphBoundingRect
 {
     CGFloat top = (self.overallGraphPadding != 0.0f) ? self.overallGraphPadding : self.topGraphPadding;
-    CGFloat bottom = self.boundingRect.size.height - ((self.overallGraphPadding != 0.0f) ? self.overallGraphPadding * 2 : self.bottomGraphPadding * 2);
+    CGFloat bottom = self->boundingRect.size.height - ((self.overallGraphPadding != 0.0f) ? self.overallGraphPadding * 2 : self.bottomGraphPadding * 2);
     bottom -= (self.overallGraphPadding != 0.0f) ? self.overallGraphPadding : self.topGraphPadding;
     CGFloat left = (self.overallGraphPadding != 0.0f) ? self.overallGraphPadding : self.leftGraphPadding;
-    CGFloat right = (self.overallGraphPadding != 0.0f) ? (CGRectGetWidth(self.boundingRect) - self.overallGraphPadding * 2) : (CGRectGetWidth(self.boundingRect) - self.rightGraphPadding * 2);
+    CGFloat right = (self.overallGraphPadding != 0.0f) ? (CGRectGetWidth(self->boundingRect) - self.overallGraphPadding * 2) : (CGRectGetWidth(self->boundingRect) - self.rightGraphPadding * 2);
     
-    CGRect rect = self.boundingRect;
+    CGRect rect = self->boundingRect;
     
     rect.origin.y += top;
     rect.origin.x += left;
@@ -204,40 +200,17 @@
 - (CGFloat)getMaxValueFromDataPoints
 {
     NSNumber *max;
-    for (int i = 0; i < [self.dataSource numberOfDataSets]; i++) {
-        for (int j = 0; j < [[self.dataSource graphViewDataPointsForSetNumber:i] count]; j++) {
+    for (int i = 0; i < [self.dataSource numberOfDatasets]; i++) {
+        for (int j = 0; j < [[self.dataSource datasetAtIndex:i] count]; j++) {
             if ([max floatValue] == NSNotFound) {
-                max = [[self.dataSource graphViewDataPointsForSetNumber:i] objectAtIndex:j];
-            } else if([max floatValue] < [[[self.dataSource graphViewDataPointsForSetNumber:i] objectAtIndex:j] floatValue]) {
-                max = [[self.dataSource graphViewDataPointsForSetNumber:i] objectAtIndex:j];
+                max = [[self.dataSource datasetAtIndex:i] objectAtIndex:j];
+            } else if([max floatValue] < [[[self.dataSource datasetAtIndex:i] objectAtIndex:j] floatValue]) {
+                max = [[self.dataSource datasetAtIndex:i] objectAtIndex:j];
             }
         }
     }
     
     return [max floatValue];
-}
-
-+ (CAShapeLayer *)layerWithPath:(CGPathRef)path withFillColor:(UIColor *)fill withStrokeColor:(UIColor *)stroke withLineWidth:(CGFloat)width
-{
-    CAShapeLayer *layer = [CAShapeLayer layer];
-    [layer setPath:path];
-    [layer setFillColor:[fill CGColor]];
-    [layer setStrokeColor:[stroke CGColor]];
-    [layer setLineCap:kCALineCapRound];
-    [layer setLineJoin:kCALineJoinRound];
-    [layer setLineWidth:width];
-    return layer;
-}
-
-+ (void)animateWithLayer:(CAShapeLayer *)layer animationDuration:(CFTimeInterval)duration
-{
-    CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    pathAnimation.duration = duration;
-    pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
-    pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
-    pathAnimation.repeatCount = 0;
-    pathAnimation.autoreverses = NO;
-    [layer addAnimation:pathAnimation forKey:@"strokeEnd"];
 }
 
 - (void)createButtonWithFrame:(CGRect)frame dataPointIndex:(int)dataPointIndex setIndex:(int)setIndex
@@ -252,11 +225,11 @@
 #pragma mark - Data Point Pressed Delegate
 - (void)didTapDataPoint:(UIButton *)button
 {
-    NSInteger intTag2 = (NSInteger)((button.tag-30000)%10000)/10;
-    NSInteger intTag1 = (NSInteger)((button.tag-(intTag2*10))-30000)/10000;
+    NSInteger setIndex = (NSInteger)((button.tag-30000)%10000)/10;
+    NSInteger dataPointIndex = (NSInteger)((button.tag-(setIndex*10))-30000)/10000;
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(JSGraphView:didTapDataPointAtIndex:inSet:)]) {
-        [self.delegate JSGraphView:self didTapDataPointAtIndex:intTag1 inSet:intTag2];
+        [self.delegate JSGraphView:self didTapDataPointAtIndex:dataPointIndex inSet:setIndex];
     }
 }
 

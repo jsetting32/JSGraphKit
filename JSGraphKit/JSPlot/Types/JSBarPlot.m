@@ -7,11 +7,7 @@
 //
 
 #import "JSBarPlot.h"
-
-@interface JSBarPlot()
-@property (nonatomic, assign) CGRect innerGraphBoundingRect;
-@property (nonatomic, assign) JSGraphTheme graphTheme;
-@end
+#import "JSGraphView+Protected.h"
 
 @implementation JSBarPlot
 
@@ -24,14 +20,14 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    if (!(self = [super initWithFrame:frame withTheme:self.graphTheme])) return nil;
+    if (!(self = [super initWithFrame:frame withTheme:self->graphTheme])) return nil;
     [self commonInit];
     return self;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame withTheme:(JSGraphTheme)theme
 {
-    self.graphTheme = theme;
+    self->graphTheme = theme;
     return [self initWithFrame:frame];
 }
 
@@ -46,7 +42,7 @@
     self.barGradientColorDirection = JSBarGradientDirectionHorizontal;
     self.barGradientColors = @[[UIColor lightGrayColor], [UIColor darkGrayColor]];
     self.barAnimationDuration = 0.0f;
-    [self setTheme:self.graphTheme];
+    [self setTheme:self->graphTheme];
 }
 
 
@@ -78,11 +74,11 @@
 {
     [super drawRect:rect];
     
-    if (![self.dataSource respondsToSelector:@selector(numberOfDataSets)]) {
+    if (![self.dataSource respondsToSelector:@selector(numberOfDatasets)]) {
         NSAssert(NO, @"It is required to implement the data source 'numberOfDataSets' selector");
     }
     
-    if (![self.dataSource respondsToSelector:@selector(graphViewDataPointsForSetNumber:)]) {
+    if (![self.dataSource respondsToSelector:@selector(datasetAtIndex:)]) {
         NSAssert(NO, @"It is required to implement the data source 'graphViewDataPointsForSetNumber:' selector");
     }
     
@@ -95,18 +91,18 @@
     int maxGraphHeight = rect.size.height;
     CGFloat maxPoint = [self getMaxValueFromDataPoints];
     
-    NSInteger numberOfSets = [self.dataSource numberOfDataSets];
+    NSInteger numberOfSets = [self.dataSource numberOfDatasets];
     
     for (int j = 0; j < numberOfSets; j++) {
         
-        NSInteger numberOfPoints = [[self.dataSource graphViewDataPointsForSetNumber:j] count];
+        NSInteger numberOfPoints = [[self.dataSource datasetAtIndex:j] count];
         
         for (int i = 0; i < numberOfPoints; i++)
         {
             float divider = CGRectGetWidth(rect) / (numberOfPoints * numberOfSets);
-            CGFloat dataPoint = [[[self.dataSource graphViewDataPointsForSetNumber:j] objectAtIndex:i] floatValue];
+            CGFloat dataPoint = [[[self.dataSource datasetAtIndex:j] objectAtIndex:i] floatValue];
             
-            CGFloat barWidth = self.boundingRect.size.width / numberOfPoints / numberOfSets - (self.barPadding / numberOfSets);
+            CGFloat barWidth = self->boundingRect.size.width / numberOfPoints / numberOfSets - (self.barPadding / numberOfSets);
             CGFloat barHeight = maxGraphHeight * (dataPoint / maxPoint);
             CGFloat barXOrigin = rect.origin.x + (i * divider * numberOfSets) + j * divider;
             CGFloat barYOrigin = rect.origin.y + (maxGraphHeight - barHeight);
@@ -134,29 +130,9 @@
         return;
     }
     
-    CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
-
-    NSArray *colors = [self.dataSource gradientColorsForPlotSet:set];
-    
-    CGFloat locations[[colors count]];
-    NSMutableArray *colorsRefs = [NSMutableArray array];
-    for (int i = 0; i < [colors count]; i++ ) {
-        UIColor *color = [colors objectAtIndex:i];
-        if (i == 0) {
-            locations[i] = 0.0f;
-        } else if (i == [colors count] - 1) {
-            locations[i] = 1.0f;
-        } else {
-            locations[i] = i / [colors count];
-        }
-        
-        [colorsRefs addObject:(__bridge id)[color CGColor]];
-    }
-    
-    CGGradientRef gradient = CGGradientCreateWithColors(colorspace, (__bridge CFArrayRef) colorsRefs, locations);
+    CGGradientRef gradient = [JSGraphView generateGradientWithColors:[self.dataSource gradientColorsForPlotSet:set]];
     
     CGPoint startPoint = rect.origin;
-    
     
     CGPoint endPoint = (self.barGradientColorDirection == JSBarGradientDirectionHorizontal) ?
     CGPointMake(rect.origin.x + rect.size.width, rect.origin.y) : CGPointMake(rect.origin.x + rect.size.width, rect.origin.y + rect.size.height);
@@ -181,7 +157,6 @@
     CGContextRestoreGState(ctx);
     
     // Release the resources
-    CGColorSpaceRelease(colorspace);
     CGGradientRelease(gradient);
 }
 
