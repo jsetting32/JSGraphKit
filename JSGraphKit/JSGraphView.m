@@ -113,10 +113,15 @@
         NSMutableArray *strings = [NSMutableArray array];
         
         for (int i = 0; i < [self.dataSource numberOfDatasets]; i++) {
-            NSAssert([self.dataSource colorForPlotSet:i], ([NSString stringWithFormat:@"You havent specified a color for dataset at index %i", i]));
-            NSAssert([[self.dataSource graphViewWithLegendDataTypes] objectAtIndex:i], ([NSString stringWithFormat:@"You havent specified a type name for dataset at index %i", i]));
-            [colors addObject:[self.dataSource colorForPlotSet:i]];
-            [strings addObject:[[self.dataSource graphViewWithLegendDataTypes] objectAtIndex:i]];
+            if ([self.dataSource respondsToSelector:@selector(colorForPlotSet:)]) {
+                NSAssert([self.dataSource colorForPlotSet:i], ([NSString stringWithFormat:@"You havent specified a color for dataset at index %i", i]));
+                [colors addObject:[self.dataSource colorForPlotSet:i]];
+            }
+            
+            if ([self.dataSource respondsToSelector:@selector(graphViewWithLegendDataTypes)]) {
+                NSAssert([[self.dataSource graphViewWithLegendDataTypes] objectAtIndex:i], ([NSString stringWithFormat:@"You havent specified a type name for dataset at index %i", i]));
+                [strings addObject:[[self.dataSource graphViewWithLegendDataTypes] objectAtIndex:i]];
+            }
         }
         
         self.legend = [[JSLegend alloc] initWithLegendStrings:strings withColors:colors];

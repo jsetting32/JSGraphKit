@@ -89,7 +89,13 @@
 - (void)drawBarPlotWithRect:(CGRect)rect context:(CGContextRef)ctx
 {    
     int maxGraphHeight = rect.size.height;
-    CGFloat maxPoint = [self getMaxValueFromDataPoints];
+    
+    CGFloat maxPoint;
+    if ([self.dataSource respondsToSelector:@selector(setMaximumValueForGraph)]) {
+        maxPoint = [self getMaxValueFromDataPoints];
+    } else {
+        maxPoint = [[self.dataSource setMaximumValueForGraph] floatValue];
+    }
     
     NSInteger numberOfSets = [self.dataSource numberOfDatasets];
     

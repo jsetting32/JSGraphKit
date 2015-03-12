@@ -69,6 +69,10 @@ typedef enum {
  */
 - (CFTimeInterval)animateDurationForDataPointsInSet:(NSInteger)setNumber;
 
+/*!
+ * @abstract Creates the graphs maximum value.
+ */
+- (NSNumber *)setMaximumValueForGraph;
 @required
 
 /*!

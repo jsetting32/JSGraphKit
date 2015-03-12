@@ -153,7 +153,12 @@
 {
     if (self.pointRadius <= 0.0f) return;
     
-    CGFloat maxPoint = [self getMaxValueFromDataPoints];
+    CGFloat maxPoint;
+    if ([self.dataSource respondsToSelector:@selector(setMaximumValueForGraph)]) {
+        maxPoint = [self getMaxValueFromDataPoints];
+    } else {
+        maxPoint = [[self.dataSource setMaximumValueForGraph] floatValue];
+    }
     
     for (int j = 0; j < [self.dataSource numberOfDatasets]; j++) {
 
@@ -191,8 +196,13 @@
     if (!self.showPointLabels) return;
     
     CGContextSaveGState(ctx);
-
-    CGFloat maxPoint = [self getMaxValueFromDataPoints];
+    
+    CGFloat maxPoint;
+    if ([self.dataSource respondsToSelector:@selector(setMaximumValueForGraph)]) {
+        maxPoint = [self getMaxValueFromDataPoints];
+    } else {
+        maxPoint = [[self.dataSource setMaximumValueForGraph] floatValue];
+    }
     
     int maxGraphHeight = rect.size.height;
     
@@ -217,10 +227,14 @@
 {
     if (self.lineWidth <= 0.0f) return;
     
-    CGFloat maxPoint = [self getMaxValueFromDataPoints];
-    int maxGraphHeight = rect.size.height;
+    CGFloat maxPoint;
+    if ([self.dataSource respondsToSelector:@selector(setMaximumValueForGraph)]) {
+        maxPoint = [self getMaxValueFromDataPoints];
+    } else {
+        maxPoint = [[self.dataSource setMaximumValueForGraph] floatValue];
+    }
     
-    NSLog(@"%@", ctx);
+    int maxGraphHeight = rect.size.height;
     
     if (self.showLineCurvature) {
         
@@ -328,7 +342,13 @@
         NSAssert(NO, @"It is required to implement the data source 'gradientColorsForPlotSet:' selector with your colors");
     }
         
-    CGFloat maxPoint = [self getMaxValueFromDataPoints];
+    CGFloat maxPoint;
+    if ([self.dataSource respondsToSelector:@selector(setMaximumValueForGraph)]) {
+        maxPoint = [self getMaxValueFromDataPoints];
+    } else {
+        maxPoint = [[self.dataSource setMaximumValueForGraph] floatValue];
+    }
+    
     int maxGraphHeight = rect.size.height;
     CGPoint startPoint, endPoint;
     startPoint.x = 0;
