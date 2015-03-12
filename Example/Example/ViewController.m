@@ -7,8 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "JSScatterPlot.h"
-#import "JSBarPlot.h"
+#import "JSGraphKit.h"
 
 @interface ViewController () <JSGraphViewDataSource, JSGraphViewDelegate>
 @property (nonatomic, strong) JSScatterPlot *scatterPlot;

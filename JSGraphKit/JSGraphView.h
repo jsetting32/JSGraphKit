@@ -73,6 +73,11 @@ typedef enum {
  * @abstract Creates the graphs maximum value.
  */
 - (NSNumber *)setMaximumValueForGraph;
+
+/*!
+ * @abstract Creates the graphs maximum value.
+ */
+- (NSNumber *)setMinimumValueForGraph;
 @required
 
 /*!

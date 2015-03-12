@@ -92,9 +92,10 @@
     
     CGFloat maxPoint;
     if ([self.dataSource respondsToSelector:@selector(setMaximumValueForGraph)]) {
-        maxPoint = [self getMaxValueFromDataPoints];
-    } else {
         maxPoint = [[self.dataSource setMaximumValueForGraph] floatValue];
+        if (maxPoint == 0) maxPoint = [self getMaxValueFromDataPoints];
+    } else {
+        maxPoint = [self getMaxValueFromDataPoints];
     }
     
     NSInteger numberOfSets = [self.dataSource numberOfDatasets];

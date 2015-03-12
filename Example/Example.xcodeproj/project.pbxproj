@@ -35,6 +35,7 @@
 /* Begin PBXFileReference section */
 		1E3B2C301AAE6DB200596C06 /* JSGraphView+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JSGraphView+Protected.h"; sourceTree = "<group>"; };
 		1E3B2C311AAE6DB300596C06 /* JSGraphView+Protected.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "JSGraphView+Protected.m"; sourceTree = "<group>"; };
+		1E563B8B1AB1CFA4004F081E /* JSGraphKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSGraphKit.h; sourceTree = "<group>"; };
 		1EC9A1091AAB0472004DE64D /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EC9A10D1AAB0472004DE64D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1EC9A10E1AAB0472004DE64D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -141,6 +142,7 @@
 		1EC9A1321AAB050D004DE64D /* JSGraphKit */ = {
 			isa = PBXGroup;
 			children = (
+				1E563B8B1AB1CFA4004F081E /* JSGraphKit.h */,
 				1EC9A1331AAB050D004DE64D /* JSGraphView.h */,
 				1EC9A1341AAB050D004DE64D /* JSGraphView.m */,
 				1E3B2C301AAE6DB200596C06 /* JSGraphView+Protected.h */,

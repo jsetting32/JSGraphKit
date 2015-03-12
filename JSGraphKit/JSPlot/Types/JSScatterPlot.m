@@ -155,9 +155,10 @@
     
     CGFloat maxPoint;
     if ([self.dataSource respondsToSelector:@selector(setMaximumValueForGraph)]) {
-        maxPoint = [self getMaxValueFromDataPoints];
-    } else {
         maxPoint = [[self.dataSource setMaximumValueForGraph] floatValue];
+        if (maxPoint == 0) maxPoint = [self getMaxValueFromDataPoints];
+    } else {
+        maxPoint = [self getMaxValueFromDataPoints];
     }
     
     for (int j = 0; j < [self.dataSource numberOfDatasets]; j++) {
@@ -199,9 +200,10 @@
     
     CGFloat maxPoint;
     if ([self.dataSource respondsToSelector:@selector(setMaximumValueForGraph)]) {
-        maxPoint = [self getMaxValueFromDataPoints];
-    } else {
         maxPoint = [[self.dataSource setMaximumValueForGraph] floatValue];
+        if (maxPoint == 0) maxPoint = [self getMaxValueFromDataPoints];
+    } else {
+        maxPoint = [self getMaxValueFromDataPoints];
     }
     
     int maxGraphHeight = rect.size.height;
@@ -229,108 +231,71 @@
     
     CGFloat maxPoint;
     if ([self.dataSource respondsToSelector:@selector(setMaximumValueForGraph)]) {
-        maxPoint = [self getMaxValueFromDataPoints];
-    } else {
         maxPoint = [[self.dataSource setMaximumValueForGraph] floatValue];
+        if (maxPoint == 0) maxPoint = [self getMaxValueFromDataPoints];
+    } else {
+        maxPoint = [self getMaxValueFromDataPoints];
     }
     
     int maxGraphHeight = rect.size.height;
     
-    if (self.showLineCurvature) {
-        
-        for (int j = 0; j < [self.dataSource numberOfDatasets]; j++) {
-            CGFloat dataPoint = [[[self.dataSource datasetAtIndex:j] firstObject] floatValue];
-            CGFloat x = rect.origin.x;
+    for (int j = 0; j < [self.dataSource numberOfDatasets]; j++) {
+        CGFloat dataPoint = [[[self.dataSource datasetAtIndex:j] firstObject] floatValue];
+        CGFloat x = rect.origin.x;
+        CGFloat y = rect.origin.y + (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
+        CGPoint p1 = CGPointMake(x, y);
+        NSInteger numberOfDataPoints = [[self.dataSource datasetAtIndex:j] count];
+        CGMutablePathRef path = CGPathCreateMutable();
+        CGPathMoveToPoint(path, NULL, x, y);
+        float divider = CGRectGetWidth(rect) / (CGFloat)(numberOfDataPoints - 1);
+        for (int i = 0; i < numberOfDataPoints; i++) {
+            CGFloat dataPoint = [[[self.dataSource datasetAtIndex:j] objectAtIndex:i] floatValue];
+            CGFloat x = rect.origin.x + i * divider;
             CGFloat y = rect.origin.y + (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
-            CGPoint p1 = CGPointMake(x, y);
-
-            NSInteger numberOfDataPoints = [[self.dataSource datasetAtIndex:j] count];
+            CGPoint p2 = CGPointMake(x, y);
             
-            CGMutablePathRef path = CGPathCreateMutable();
-            
-            CGPathMoveToPoint(path, NULL, x, y);
-            float divider = CGRectGetWidth(rect) / (CGFloat)(numberOfDataPoints - 1);
-            for (int i = 0; i < numberOfDataPoints; i++) {
-                CGFloat dataPoint = [[[self.dataSource datasetAtIndex:j] objectAtIndex:i] floatValue];
-                CGFloat x = rect.origin.x + i * divider;
-                CGFloat y = rect.origin.y + (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
-                
-                CGPoint p2 = CGPointMake(x, y);
-                CGPoint midPoint = [JSGraphView midPointFromP1:p1 toP2:p2];
-                                    
-                CGPathAddQuadCurveToPoint(path, NULL, [JSScatterPlot controlPointForPoints:midPoint p2:p1].x,
-                                          [JSScatterPlot controlPointForPoints:midPoint p2:p1].y,
-                                          midPoint.x, midPoint.y);
-                CGPathAddQuadCurveToPoint(path, NULL, [JSScatterPlot controlPointForPoints:midPoint p2:p2].x,
-                                          [JSScatterPlot controlPointForPoints:midPoint p2:p2].y,
-                                          p2.x, p2.y);                
-                p1 = p2;
-            }
-            UIColor *stroke;
-            if ([self.dataSource respondsToSelector:@selector(colorForPlotSet:)]) {
-                stroke = [self.dataSource colorForPlotSet:j];
-            } else {
-                stroke = self.lineColor;
-            }
-            
-            CAShapeLayer *layer = [self layerWithPath:path withFillColor:[UIColor clearColor] withStrokeColor:stroke withLineWidth:self.lineWidth];
-            [self.layer addSublayer:layer];
-            
-            if ([self.dataSource respondsToSelector:@selector(animateDurationForDataPointsInSet:)]) {
-                CABasicAnimation *animation = [self animateLineWithLayer:layer animationDuration:[self.dataSource animateDurationForDataPointsInSet:j]];
-                [layer addAnimation:animation forKey:animation.keyPath];
-            } else {
-                if (self.lineAnimationDuration > 0.0f) {
-                    CABasicAnimation *animation = [self animateLineWithLayer:layer animationDuration:self.lineAnimationDuration];
-                    [layer addAnimation:animation forKey:animation.keyPath];
-                }
-            }
-            
-            CGPathRelease(path);
-        }
-
-    } else {
-        for (int j = 0; j < [self.dataSource numberOfDatasets]; j++) {
-            
-            CGMutablePathRef path = CGPathCreateMutable();
-            NSInteger numberOfDataPoints = [[self.dataSource datasetAtIndex:j] count];
-
-            float divider = CGRectGetWidth(rect) / (CGFloat)(numberOfDataPoints - 1);
-            for (int i = 0; i < numberOfDataPoints; i++) {
-                CGFloat dataPoint = [[[self.dataSource datasetAtIndex:j] objectAtIndex:i] floatValue];
-                CGFloat x = rect.origin.x + i * divider;
-                CGFloat y = rect.origin.y + (rect.size.height - maxGraphHeight * (dataPoint / maxPoint));
+            if (!self.showLineCurvature) {
                 if (i == 0) {
                     CGPathMoveToPoint(path, NULL, x, y);
                 } else {
                     CGPathAddLineToPoint(path, NULL, x, y);
                 }
-            }
-            
-            UIColor *stroke;
-            if ([self.dataSource respondsToSelector:@selector(colorForPlotSet:)]) {
-                stroke = [self.dataSource colorForPlotSet:j];
             } else {
-                stroke = self.lineColor;
+                CGPoint midPoint = [JSGraphView midPointFromP1:p1 toP2:p2];
+                CGPathAddQuadCurveToPoint(path, NULL, [JSScatterPlot controlPointForPoints:midPoint p2:p1].x,
+                                          [JSScatterPlot controlPointForPoints:midPoint p2:p1].y,
+                                          midPoint.x, midPoint.y);
+                CGPathAddQuadCurveToPoint(path, NULL, [JSScatterPlot controlPointForPoints:midPoint p2:p2].x,
+                                          [JSScatterPlot controlPointForPoints:midPoint p2:p2].y,
+                                          p2.x, p2.y);
             }
             
-            
-            CAShapeLayer *layer = [self layerWithPath:path withFillColor:[UIColor clearColor] withStrokeColor:stroke withLineWidth:self.lineWidth];
-            [self.layer addSublayer:layer];
-            
-            if ([self.dataSource respondsToSelector:@selector(animateDurationForDataPointsInSet:)]) {
-                CABasicAnimation *animation = [self animateLineWithLayer:layer animationDuration:[self.dataSource animateDurationForDataPointsInSet:j]];
-                [layer addAnimation:animation forKey:animation.keyPath];
-            } else {
-                if (self.lineAnimationDuration > 0.0f) {
-                    CABasicAnimation *animation = [self animateLineWithLayer:layer animationDuration:self.lineAnimationDuration];
-                    [layer addAnimation:animation forKey:animation.keyPath];
-                }
-            }
-            
-            CGPathRelease(path);
+            p1 = p2;
         }
+        
+        UIColor *stroke;
+        if ([self.dataSource respondsToSelector:@selector(colorForPlotSet:)]) {
+            stroke = [self.dataSource colorForPlotSet:j];
+        } else {
+            stroke = self.lineColor;
+        }
+        
+        CAShapeLayer *layer = [self layerWithPath:path withFillColor:[UIColor clearColor] withStrokeColor:stroke withLineWidth:self.lineWidth];
+        [self.layer addSublayer:layer];
+        
+        if ([self.dataSource respondsToSelector:@selector(animateDurationForDataPointsInSet:)]) {
+            CABasicAnimation *animation = [self animateLineWithLayer:layer animationDuration:[self.dataSource animateDurationForDataPointsInSet:j]];
+            [layer addAnimation:animation forKey:animation.keyPath];
+        } else {
+            if (self.lineAnimationDuration > 0.0f) {
+                CABasicAnimation *animation = [self animateLineWithLayer:layer animationDuration:self.lineAnimationDuration];
+                [layer addAnimation:animation forKey:animation.keyPath];
+            }
+        }
+        
+        CGPathRelease(path);
     }
+
 }
 
 #pragma mark - Draw gradient under line plot
@@ -344,9 +309,10 @@
         
     CGFloat maxPoint;
     if ([self.dataSource respondsToSelector:@selector(setMaximumValueForGraph)]) {
-        maxPoint = [self getMaxValueFromDataPoints];
-    } else {
         maxPoint = [[self.dataSource setMaximumValueForGraph] floatValue];
+        if (maxPoint == 0) maxPoint = [self getMaxValueFromDataPoints];
+    } else {
+        maxPoint = [self getMaxValueFromDataPoints];
     }
     
     int maxGraphHeight = rect.size.height;
