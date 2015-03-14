@@ -1,7 +1,7 @@
 # JSGraphKit
 Lightweight Graphing Library using CoreGraphics.
 
-![Alt text](Showcase2.png "Optional Title")
+![Alt text](Screenshots/Showcase2.png "Optional Title")
 
 <h2>How it works</h2>
 The library currently consists of two views, JSScatterPlot and JSBarPlot, both of which are subclasses of JSPlot. It's up to the developer to set the paddings of the graphs and data. The API makes it simple and there are default themes to use. Also, the graphs adjust according to its bounds, making porting the library to your project easy and simply by just setting the frame and feeding it data.
@@ -59,7 +59,7 @@ You can also set the frame of the legend by modifying the legendOffset and legen
 
 Heres the result:
 
-![Alt text](Showcase1.png "Optional Title")
+![Alt text](Screenshots/Showcase1.png "Optional Title")
 
 <h3>You can now add a horizontal and vertical axes title</h3>
 
@@ -125,7 +125,7 @@ So here, we specify how many 'lines' we want to create. We then specify the amou
 
 Heres the result...
 
-![Alt text](Example0.png "Optional Title")
+![Alt text](Screenshots/Example0.png "Optional Title")
 
 Eww... Not the best layout. Maybe I should change the default theme :P. But first, the graph seems to not show the min/max x points as well as min/max y points, or at least there cut off. So lets fix that. Here we set the padding of the graph view.
 
@@ -134,7 +134,7 @@ Eww... Not the best layout. Maybe I should change the default theme :P. But firs
 ```
 Simple huh? Now lets see what we got.
 
-![Alt text](Example1.png "Optional Title")
+![Alt text](Screenshots/Example1.png "Optional Title")
 
 Nice! Now we can actually see all the data.
 
@@ -145,7 +145,7 @@ Okay now lets set some themes, lets go with the Sky theme (my favorite)
 ```
 Heres what we get...
 
-![Alt text](Example2.png "Optional Title")
+![Alt text](Screenshots/Example2.png "Optional Title")
 
 Oh nice! Im likin it so far. But theres still some stuff missing :/. Lets add some horizontal lines! There is a datasource protocol you can implement to do this. Just set the number of lines you want and the library does the rest. By default, the horizontal and vertical axis aren't drawn. To show them, set the properties to yes. But when you set these to show, you need to implement the data source! Otherwise you will crash and receive an Assert message I implemented.
 
@@ -161,7 +161,7 @@ Oh nice! Im likin it so far. But theres still some stuff missing :/. Lets add so
 
 Lets see what this does...
 
-![Alt text](Example3.png "Optional Title")
+![Alt text](Screenshots/Example3.png "Optional Title")
 
 Nice! We have lines! The Vertical Axis is in development now. You can use them but I advise you to wait or contribute! 
 
@@ -189,7 +189,7 @@ So now lets make these multiple data sets distinct between eachother with colors
 
 Heres the result...
 
-![Alt text](Example4.png "Optional Title")
+![Alt text](Screenshots/Example4.png "Optional Title")
 
 Cool, we can distinguish between the data now!
 
@@ -215,7 +215,7 @@ You can also 'do stuff' when a point is tapped. Just set your controller as the 
 ```
 
 
-![Alt text](Showcase0.png "Optional Title")
+![Alt text](Screenshots/Showcase0.png "Optional Title")
 
 <br><br>
 <h2>Requirements</h2>
